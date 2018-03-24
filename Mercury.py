@@ -16,9 +16,7 @@ try:
 	import wget
 	import json #Reads Data
 	import optparse
-	import zipfile 
-	from queue import Queue
-	import logging,urllib
+	import urllib
 	from threading import Thread
 	from optparse import OptionParser
 	from selenium import webdriver #Allows Us To Search
@@ -44,10 +42,10 @@ except KeyboardInterrupt:
 		os.system('pip install optparse')
 		os.system('pip install wget')
 		os.system('pip install ConfigParser')
-		os.system('pip install queue')
 		os.system('pip install urllib')
 		os.system('pip install logging')
 		os.system('pip install threading')
+		os.system('pip install pygoogling')
 		
 
 x = os.path.dirname(os.path.abspath(__file__))
