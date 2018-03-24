@@ -24,7 +24,7 @@ try:
 	from selenium import webdriver #Allows Us To Search
 	from colorama import init, Fore, Back, Style
 	from pygoogling.googling import GoogleSearch
-except ImportError:
+except KeyboardInterrupt:
 	print ('Do you have all of the needed Modules ? colorama, selenium, requests, json,Google Search, and urllib2!!')
 	time.sleep(1)
 	yn = raw_input('Would You Like To Install Them Now? y/n: ')
