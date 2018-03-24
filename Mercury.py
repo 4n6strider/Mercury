@@ -1,29 +1,24 @@
 #Modules
 import os, sys,time#Import Other Coding languages
 try:
-	import colorama #Colorize Text 
-	from colorama import init, Fore, Back, Style
-	init(convert=True)
-	import time #space out requests
-	from time import strftime #Show Time
-	import pygoogling
-	import ConfigParser
+	import json
 	import socket
-	import selenium #Module For Search
-	import requests #Sends Requests
 	import urllib2
 	import random
-	import wget
-	import json #Reads Data
+	import selenium
+	import requests
 	import optparse
-	import zipfile 
+	import colorama
+	import pygoogling
+	import ConfigParser
 	import logging,urllib
+	from time import strftime
 	from threading import Thread
+	from selenium import webdriver
 	from optparse import OptionParser
-	from selenium import webdriver #Allows Us To Search
 	from colorama import init, Fore, Back, Style
 	from pygoogling.googling import GoogleSearch
-except ImportError:
+except ImportError: #If you dont have the required modules this error will help install them for you
 	print ('Do you have all of the needed Modules ? colorama, selenium, requests, json,Google Search, and urllib2!!')
 	time.sleep(1)
 	yn = raw_input('Would You Like To Install Them Now? y/n: ')
@@ -41,22 +36,25 @@ except ImportError:
 		os.system('pip install sys')
 		os.system('pip install time')
 		os.system('pip install optparse')
-		os.system('pip install wget')
 		os.system('pip install ConfigParser')
 		os.system('pip install urllib')
 		os.system('pip install logging')
 		os.system('pip install threading')
 		os.system('pip install pygoogling')
+	'''
+	Allows the program to find the build and sats 
 
+	'''
 x = os.path.dirname(os.path.abspath(__file__))
 builddata = open(x+'/Extra/Build.cfg','r')
-config = ConfigParser.RawConfigParser()
+config = ConfigParser.RawConfigParser() 
 config.readfp(builddata)
 build = config.get('mercury', 'build')
 parser = optparse.OptionParser()
 parser.add_option('-f', '--file', action="store", dest="file_path", help="Zip File Path", default=None)
 parser.add_option('-w', '--word_list', action="store", dest="word_list", help="Word List Path", default=None)
 headers_useragents=[]
+init(convert=True)
 
 
 termsAndConditions = Fore.RED + '''Don`t Use Mercury To:
@@ -65,23 +63,8 @@ interrupt wifi / bluetooth signals without permission, violate security,
 and violate privacy
 
 '''
-
+#terms and condtions 
             
-
-
-class color:
-   PURPLE = '\033[95m'
-   CYAN = '\033[96m'
-   DARKCYAN = '\033[36m'
-   BLUE = '\033[94m'
-   GREEN = '\033[92m'
-   YELLOW = '\033[93m'
-   RED = '\033[91m'
-   BOLD = '\033[1m'
-   UNDERLINE = '\033[4m'
-   END = '\033[0m'
-
-
 def extra_long():
 	time.sleep(10) #Pause == 4 Secs
 def long():
@@ -97,18 +80,18 @@ def space():
 def agreement():
  afile = open(x+'/Extra/Mercury.txt','r+')
  term = afile.readlines() # Creates a list of lines called term
- for line in term:
-     print(line) 
-     if 'yes' in line:
+ for line in term: #for lines in term
+     print(line) #prints line
+     if 'yes' in line: #if you agreed skip to main menu
          found = True
          clear()
          mainmenu()
-     if ' ' in line:
+     if ' ' in line: #if not load up terms
          found = False
          clear()
          print(termsAndConditions)
          agree = raw_input(Fore.YELLOW + 'Type "yes" To Agree: ')
-         if agree == 'yes':
+         if agree == 'yes': #saves agree
              file = open(x+'\Extra\Mercury.txt','w')
              afile.write('yes')
              file.close()
@@ -118,40 +101,40 @@ def agreement():
 		  
 def readme():
 	clear()
-	readme = open(x+'/README!!!.txt','r')
-	license = open(x+'/License', 'r')
-	file_contents = readme.read()
-	file_contents2 = license.read()
-	print (file_contents)
+	readme = open(x+'/README!!!.md','r') #opens file
+	license = open(x+'/License', 'r') #opens file
+	file_contents = readme.read() #reads file
+	file_contents2 = license.read() #reads file
+	print (file_contents) #prints ReadMe
 	space()
 	extra_long()
 	clear()
-	print (file_contents2)
+	print (file_contents2) #print License
 	extra_long()
 	mainmenu()
 
 def pythoni():
 	clear()
 	try:
-		os.system('python')
-	except KeyboardInterrupt:
+		os.system('python') #loads python
+	except KeyboardInterrupt: #returns to main menu if ctrl C is used
 		mainmenu()
 def googledork():
 	count3 = 1
-	dork = open(x +'/Resources/GoogleDorks.txt','r')
+	dork = open(x +'/Resources/GoogleDorks.txt','r') #opens in url
 	try:
 		while True:
 			lines = dork.read(count3)
 			google_search = GoogleSearch(lines)
-			google_search.start_search(max_page=1)
-			print(google_search.search_result)
-			count3 += 1 
+			google_search.start_search(max_page=1) #searches
+			print(google_search.search_result)  #prints seaches
+			count3 += 1 #count +1 aka next inurl
 			
 	except IOError:
 		mainmenu()
-	except KeyboardInterrupt:
+	except KeyboardInterrupt: #returns to main menu if ctrl C is used
 		mainmenu()
-	except UnicodeEncodeError:
+	except UnicodeEncodeError: #There Is an error if the encoding is not utf 8 you can change pass to just keep going even after error
 		extra_long()
 		mainmenu()
 
@@ -159,7 +142,7 @@ def update():
 	clear()
 	print (Fore.CYAN + 'You have build ' +build)
 	quick()
-	os.system('git clone https://github.com/14dead/Mercury-14dead '+x+'/Update')
+	os.system('git clone https://github.com/14dead/Mercury-14dead '+x+'/Update') #Just redownloads the repo
 	sys.exit()
 def helpme():
 	print ('''
@@ -184,14 +167,14 @@ def sourcecodep():
 		response = urllib2.urlopen(URL1) #Opens Url
 		page_source = response.read() #Reads URL
 		space()
-		print >>html,  page_source #Change to python3 Syntax
-		print ('Done ! saved under users! ')
+		print >>html,  page_source #Change to python3 Syntax aka file. write
+		print ('Done ! saved under users! ') #%users%
 		quick()
 		prompt()
 	except KeyboardInterrupt:
 		print ('Stopped! ')
 		prompt()
-	except IOError:
+	except IOError: #very rare error dont worry
 		print ('File was not found \: ')
 		prompt()
 def toolss():
@@ -356,7 +339,7 @@ def toolss():
 			os.system('git clone https://github.com/rapid7/metasploit-framework '+x+'/Tools/Metasploit')
 
 			toolss()
-		except KeyboardInterrupt:
+		except KeyboardInterrupt: #returns to main menu if ctrl C is used
 			toolss()
 
 	if ans_2 == '99':
@@ -415,21 +398,21 @@ def brute_force(): #Declares Function
 				print (Fore.WHITE + 'Tried Password: ' +line+ 'For User:' +username) #Displays Data
 				print (Fore.CYAN +'# ----------------------------#')
 				count =+ 1 #Counts +1
-		except IOError:
+		except IOError: #unknown error by me 
 			print ('There was a random error sorry! ')
 			quick()
 			mainmenu()
-		except selenium.common.exceptions.StaleElementReferenceException:
+		except selenium.common.exceptions.StaleElementReferenceException: #Selector wasnt found maybe a typo
 			print (Fore.RED + 'SELECTOR NOT FOUND!!!')
 			extra_long()
 			mainmenu()
-		except selenium.common.exceptions.WebDriverException:
+		except selenium.common.exceptions.WebDriverException: #Chrome was closed
 			print (Fore.CYAN + 'Chrome was closed! ')
 			extra_long()
 			mainmenu()
-		except KeyboardInterrupt:
+		except KeyboardInterrupt: #returns to main menu if ctrl C is used
 			mainmenu()
-def pip_installep():
+def pip_installep(): #change to p so it could by loaded in prompt
 	try:
 		pip = raw_input(Fore.CYAN + '	What Pip would you like to install: ')
 		os.system('pip install ' +pip)
@@ -450,7 +433,7 @@ def ipaddress():
 		mainmenu()
 	except KeyboardInterrupt:
 		mainmenu()
-	except AttributeError:
+	except AttributeError: #enter link like www.google.com rather than https://www.google.com
 		print ('Dont include https or http in the site link !')
 		quick()
 		mainmenu()
@@ -458,14 +441,14 @@ def ipaddress():
 def networksweb():
 	url3 = raw_input(Fore.CYAN + 'Enter a host name include https: ')
 	count3 = 1
-	while True:
+	while True: #loop
 			try:
-				urllib2 .urlopen(url3)
-		    		status = "Connected"
-		    	except KeyboardInterrupt:
-				mainmenu()
+				urllib2 .urlopen(url3) #opens link
+		    		status = "Connected" #if no error
+		    	except KeyboardInterrupt: #returns to main menu if ctrl C is used
+				mainmenu() #mainmenu
 			except:
-		    		status = "Not connected"
+		    		status = "Not connected" #if you cant connect then:
 		    		print (Fore.RED+'Attempt '+ Fore.RED +str( count3 )+ Fore.RED +  ' At Host: '+ Fore.RED +url3 + Fore.RED + ': OFFLINE')
 				print (status)
 
@@ -473,25 +456,25 @@ def networksweb():
 				print (Fore.CYAN +'Attempt '+ Fore.CYAN +str( count3 )+ Fore.CYAN +  ' at host: '+ Fore.CYAN +url3 + Fore.GREEN + ': online')
 				count3 += 1
 def webbrowserfunc():
-	browser = webdriver.Chrome()
-	browser.get()
+	surf = webdriver.Chrome() #opens chrome you can change to FireFox if you won`t like: surf = webdriver.Firefox()
+	surf.get('https://www.googlecom')
 
 def mac():
-	os.system('getmac') #For Linux Change 
+	os.system('getmac') #For Linux Change to ifconfig -a
 	long()
 	mainmenu()
 def myip():
-	print (	'Your ip is ' + Fore.CYAN + socket.gethostbyname(socket.gethostname()))
+	print (	'Your ip is ' + Fore.CYAN + socket.gethostbyname(socket.gethostname())) #gets ip address from socket linux always returns 12.0.0.1
 	long()
 	mainmenu()
 def pip_installer():
 	try:
-		pip = raw_input(Fore.CYAN + '	What Pip would you like to install: ')
-		os.system('pip install ' +pip)
+		pip = raw_input(Fore.CYAN + '	What Pip would you like to install: ') #what pip 
+		os.system('pip install ' +pip) #installs pip
 		time.sleep(1)
 		clear()
 		mainmenu()
-	except KeyboardInterrupt:
+	except KeyboardInterrupt: 
 		print ('Stopped! ')
 		quick()
 		mainmenu()
@@ -499,7 +482,7 @@ def github():
 	githublink = raw_input(Fore.CYAN + '	Enter an url to the GitHub repo: ')
 	name = raw_input('		What is the name of the repo? ')
 	try:
-		os.system('git clone '+githublink+ ' '+x+'/'+name)
+		os.system('git clone '+githublink+ ' '+x+'/'+name) #save file to Mercury/'name'
 		time.sleep(1)
 		long()
 		clear()
