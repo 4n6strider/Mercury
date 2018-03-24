@@ -55,6 +55,7 @@ except ImportError:
 		time.sleep(1)
 		os.system('pip install wget')
 		time.sleep(1)
+		os.system('pip install ConfigParser')
 
 x = os.path.dirname(os.path.abspath(__file__))
 builddata = open(x+'/Extra/Build.cfg','r')
