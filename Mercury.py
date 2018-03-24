@@ -16,13 +16,14 @@ try:
 	import wget
 	import json #Reads Data
 	import optparse
-	import urllib
+	import zipfile 
+	import logging,urllib
 	from threading import Thread
 	from optparse import OptionParser
 	from selenium import webdriver #Allows Us To Search
 	from colorama import init, Fore, Back, Style
 	from pygoogling.googling import GoogleSearch
-except KeyboardInterrupt:
+except ImportError:
 	print ('Do you have all of the needed Modules ? colorama, selenium, requests, json,Google Search, and urllib2!!')
 	time.sleep(1)
 	yn = raw_input('Would You Like To Install Them Now? y/n: ')
@@ -46,7 +47,6 @@ except KeyboardInterrupt:
 		os.system('pip install logging')
 		os.system('pip install threading')
 		os.system('pip install pygoogling')
-		
 
 x = os.path.dirname(os.path.abspath(__file__))
 builddata = open(x+'/Extra/Build.cfg','r')
@@ -95,7 +95,7 @@ def space():
 	print ' '	
 
 def agreement():
- afile = open(x+'\Extra\Mercury.txt','r+')
+ afile = open(x+'/Extra/Mercury.txt','r+')
  term = afile.readlines() # Creates a list of lines called term
  for line in term:
      print(line) 
@@ -118,8 +118,8 @@ def agreement():
 		  
 def readme():
 	clear()
-	readme = open(x+'\README!!!.txt','r')
-	license = open(x+'\License', 'r')
+	readme = open(x+'/README!!!.txt','r')
+	license = open(x+'/License', 'r')
 	file_contents = readme.read()
 	file_contents2 = license.read()
 	print (file_contents)
@@ -138,7 +138,7 @@ def pythoni():
 		mainmenu()
 def googledork():
 	count3 = 1
-	dork = open(x +'\Resources\GoogleDorks.txt','r')
+	dork = open(x +'/Resources/GoogleDorks.txt','r')
 	try:
 		while True:
 			lines = dork.read(count3)
@@ -385,7 +385,7 @@ def sourcecode():
 		mainmenu()
 	mainmenu()
 def brute_force(): #Declares Function
-	f = open(x+'\Resources\passwords.txt', 'r')
+	f = open(x+'/Resources/passwords.txt', 'r')
 	browser = webdriver.Chrome() #Opens Chrome
 	username = raw_input(Fore.CYAN + '	What is the Username? ') #Username
 	USS = raw_input('		What is the CSS Selector for the Username? ') #CSS Selector Username
