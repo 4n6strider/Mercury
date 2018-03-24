@@ -1,7 +1,5 @@
                                                                                  
 
-
-
 Features:
 
 BruteForce
@@ -24,7 +22,15 @@ download extra tools
 
 install pips and github repos
 
+Hash encode
 
+Linux ISO Downloads
+
+Check if site exists
+
+Email bomb
+
+Anon emails
 
 
 

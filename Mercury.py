@@ -4,11 +4,14 @@ try:
 	import json
 	import socket
 	import urllib2
+	import smtplib
+	import hashlib
 	import random
 	import selenium
 	import requests
 	import optparse
 	import colorama
+	import mechanize
 	import pygoogling
 	import ConfigParser
 	import logging,urllib
@@ -18,8 +21,9 @@ try:
 	from optparse import OptionParser
 	from colorama import init, Fore, Back, Style
 	from pygoogling.googling import GoogleSearch
+	from urllib2 import Request, urlopen, URLError, HTTPError
 except ImportError: #If you dont have the required modules this error will help install them for you
-	print ('Do you have all of the needed Modules ? colorama, selenium, requests, json,Google Search, and urllib2!!')
+	print ('\033[4m Do you have all of the needed Modules ? colorama, selenium, requests, json,Google Search, and urllib2!!')
 	time.sleep(1)
 	yn = raw_input('Would You Like To Install Them Now? y/n: ')
 	if yn == 'n': 
@@ -41,23 +45,38 @@ except ImportError: #If you dont have the required modules this error will help 
 		os.system('pip install logging')
 		os.system('pip install threading')
 		os.system('pip install pygoogling')
+		os.system('pip install hashlib')
+		os.system('pip install smtplib')
+		os.system('pip install mechanize')
 	'''
-	Allows the program to find the build and sats 
+	Allows the program to find the build  
 
 	'''
+class color:
+   PURPLE = '\033[95m'
+   CYAN = '\033[96m'
+   DARKCYAN = '\033[36m'
+   BLUE = '\033[94m'
+   GREEN = '\033[92m'
+   YELLOW = '\033[93m'
+   RED = '\033[91m'
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   END = '\033[0m'
+   HEADER = '\033[95m'
+   OKBLUE = '\033[94m'
+   OKGREEN = '\033[92m'
+   WARNING = '\033'
 x = os.path.dirname(os.path.abspath(__file__))
 builddata = open(x+'/Extra/Build.cfg','r')
 config = ConfigParser.RawConfigParser() 
 config.readfp(builddata)
 build = config.get('mercury', 'build')
 parser = optparse.OptionParser()
-parser.add_option('-f', '--file', action="store", dest="file_path", help="Zip File Path", default=None)
-parser.add_option('-w', '--word_list', action="store", dest="word_list", help="Word List Path", default=None)
-headers_useragents=[]
 init(convert=True)
 
 
-termsAndConditions = Fore.RED + '''Don`t Use Mercury To:
+termsAndConditions = Fore.RED + '''\033[4m Don`t Use Mercury To:
 create and share malicious viruses, illegally harm others computers, 
 interrupt wifi / bluetooth signals without permission, violate security, 
 and violate privacy
@@ -72,7 +91,8 @@ def long():
 def quick():
 	time.sleep(2) #Pause == 2 Secs
 def clear():
-	os.system('cls') #Change To 'clear' If Running Linux ! 
+	os.system('clear')
+	os.system('cls')
 def space():
 	print ' '
 	print ' '	
@@ -96,7 +116,8 @@ def agreement():
              afile.write('yes')
              file.close()
              afile.close()
-
+         else:
+        	agreement()
 	
 		  
 def readme():
@@ -142,7 +163,7 @@ def update():
 	clear()
 	print (Fore.CYAN + 'You have build ' +build)
 	quick()
-	os.system('git clone https://github.com/14dead/Mercury-14dead '+x+'/Update') #Just redownloads the repo
+	os.system('git clone https://github.com/14dead/Mercury'+x+'/Update') #Just redownloads the repo
 	sys.exit()
 def helpme():
 	print ('''
@@ -155,7 +176,10 @@ stop                       Exit
 pips                       Pip installer
 geoip                      GeoIP
 github                     Installs Github repos
-stop                       Returns to main menu		''')
+stop                       Returns to main menu		
+
+
+''')
 	time.sleep(15)
 	prompt()
 def sourcecodep():
@@ -179,18 +203,22 @@ def sourcecodep():
 		prompt()
 def toolss():
 	clear()
-	print (Fore.WHITE + ''' d888888b  .d88b.   .d88b.  db      .d8888. 
- `~~88~~' .8P  Y8. .8P  Y8. 88      88'  YP 
-    88    88    88 88    88 88      `8bo.   
-   \033[96m 88    88    88 88    88 88        `Y8b. 
-    88    `8b  d8' `8b  d8' 88booo. db   8D 
-    YP     `Y88P'   `Y88P'  Y88888P `8888Y' 
-                                           
+	print (Fore.WHITE +  color.BOLD + ''' /$$$$$$$$                  /$$                       /$$      
+|__  $$__/                 | $$                      /$$/      
+   | $$  /$$$$$$   /$$$$$$ | $$  /$$$$$$$           /$$/       
+   | $$ /$$__  $$ /$$__  $$| $$ /$$_____/          /$$/        
+   | $$| $$  \ $$| $$  \ $$| $$|  $$$$$$          /$$/         
+   \033[96m| $$| $$  | $$| $$  | $$| $$ \____  $$        /$$/          
+   | $$|  $$$$$$/|  $$$$$$/| $$ /$$$$$$$/       /$$/           
+   |__/ \______/  \______/ |__/|_______/       |__/            
+                                                               
+                                                               
+                                                               
                                            ''')
 	space()
 	print (Fore.WHITE + '''
 	[0]\033[96m Metasploit\033[1;37;40m		[9]\033[96m Aircrack\033[1;37;40m
-	[1]\033[96m WireShark \033[1;37;40m		[10]\033[96m Wifite\033[1;37;40m
+	[1]\033[96m Mercury \033[1;37;40m		[10]\033[96m Wifite\033[1;37;40m
 	[2]\033[96m Nmap \033[1;37;40m      		[11]\033[96m Hammer\033[1;37;40m
 	[3]\033[96m Lazy script \033[1;37;40m	[12]\033[96m Xerxes\033[1;37;40m
 	[4]\033[96m fsociety \033[1;37;40m		[13]\033[96m XSStrike\033[1;37;40m
@@ -212,7 +240,7 @@ def toolss():
 			toolss()
 	if ans_2 == '1':
 		try:
-			os.system('git clone https://github.com/wireshark/wireshark '+x+'/Tools/WireShark')
+			os.system('git clone https://github.com/14Dead/Mercury '+x+'/Tools/Mercury')
 			toolss()
 		except KeyboardInterrupt:
 			toolss()	
@@ -335,7 +363,7 @@ def toolss():
 			os.system('git clone https://github.com/Manisso/fsociety '+x+'/Tools/Fsociety')
 			os.system('git clone https://github.com/arismelachroinos/lscript '+x+'/Tools/LazyScript')
 			os.system('git clone https://github.com/nmap/nmap '+x+'/Tools/Nmap')
-			os.system('git clone https://github.com/wireshark/wireshark '+x+'/Tools/WireShark')
+			os.system('git clone https://github.com/14dead/Mercury '+x+'/Tools/Mercury')
 			os.system('git clone https://github.com/rapid7/metasploit-framework '+x+'/Tools/Metasploit')
 
 			toolss()
@@ -367,6 +395,26 @@ def sourcecode():
 		print ('File was not found \: ')
 		mainmenu()
 	mainmenu()
+def siteexists():
+    try:
+        site = raw_input(Fore.CYAN + 'Enter a website: ')
+        urllib2.urlopen(site)
+    except urllib2.HTTPError, e:
+        print ('Error:')
+        print(e.code)
+        quick()
+        mainmenu()
+    except urllib2.URLError, e:
+        print ('Error:')
+        print(e.args)
+        quick()
+        mainmenu()
+    except KeyboardInterrupt:
+      mainmenu()
+    else:
+        	print ('%s Exists ') % site
+        	long()
+        	mainmenu()
 def brute_force(): #Declares Function
 	f = open(x+'/Resources/passwords.txt', 'r')
 	browser = webdriver.Chrome() #Opens Chrome
@@ -412,6 +460,39 @@ def brute_force(): #Declares Function
 			mainmenu()
 		except KeyboardInterrupt: #returns to main menu if ctrl C is used
 			mainmenu()
+def admin():
+	links = open(x+'\Resources\links.txt')
+	website = raw_input(Fore.CYAN + 'Enter a site to scan just www: ')
+	print "\033[1m \n\nAvailable links : \n"
+	while True:
+		inner = links.readline()
+		request = "http://"+website+"/"+inner
+	try:
+		response = urlopen(request)
+	except HTTPError as e:
+		pass
+		print Fore.RED + " %s : NOT WORKING"  % requests
+	except URLError as e:
+		pass
+		print Fore.RED + "%s : NOT WORKING "  % requests
+	except KeyboardInterrupt:
+		mainmenu()
+	else:
+		print Fore.GREEN + "[inf] Admin Pannel Found: %s"  % requests
+def hash():
+
+	try:
+		oghash = raw_input(Fore.CYAN + "\t Please Enter a Word/String To Hash: ") #asks for word
+		md5_encode = hashlib.md5(oghash.encode()) #encodes string
+		newhash = md5_encode.hexdigest() #saves as var
+		print(Fore.CYAN + "\t" + newhash) #prints var
+		long()
+
+	except KeyboardInterrupt:
+		pass
+	except:
+		print(Fore.CYAN + "\tCould not find hash {}".format(oghash)) #no hash found
+		quick()
 def pip_installep(): #change to p so it could by loaded in prompt
 	try:
 		pip = raw_input(Fore.CYAN + '	What Pip would you like to install: ')
@@ -423,6 +504,24 @@ def pip_installep(): #change to p so it could by loaded in prompt
 		print ('Stopped! ')
 		quick()
 		prompt()
+def hex():
+	choice = raw_input(Fore.CYAN + 'Would you like to encode or decode? ')
+	if choice == 'encode':
+		encode1()
+	if choice == 'decode':
+		decode1() 
+def encode1():
+	Str = raw_input(Fore.CYAN + 'String to encode: ')
+	Str = Str.encode('hex','strict');
+	print "Encoded: %s"  % Str
+	long()
+	mainmenu()
+def decode1():
+    Str = raw_input(Fore.CYAN + 'String to decode: ' )
+    Str = Str.decode('hex','strict');
+    print "Decoded String: %s" % Str
+    long()
+    mainmenu()
 def ipaddress():
 	try:
 		url2 = raw_input(Fore.CYAN +"Enter a website url ") #User Input
@@ -532,6 +631,67 @@ def geoLocationp():
 		prompt()
 	except KeyboardInterrupt:
 		prompt()
+def emailspoofsetup():
+	br = mechanize.Browser()
+	 
+	to = raw_input(Fore.CYAN + "Enter the recipient address: ")
+	subject = raw_input("Enter the subject: ")
+	print "Message: "
+	message = raw_input(">")
+	 
+	#proxy = "http://127.0.0.1:8080"
+	 
+	url = "http://anonymouse.org/anonemail.html"
+	headers = "Mozilla/4.0 (compatible; MSIE 5.0; AOL 4.0; Windows 95; c_athome)"
+	br.addheaders = [('User-agent', headers)]
+	br.open(url)
+	br.set_handle_equiv(True)
+	br.set_handle_gzip(True)
+	br.set_handle_redirect(True)
+	br.set_handle_referer(True)
+	br.set_handle_robots(False)
+	br.set_debug_http(False)
+	br.set_debug_redirects(False)
+	#br.set_proxies({"http": proxy})
+	 
+	br.select_form(nr=0)
+	 
+	br.form['to'] = to
+	br.form['subject'] = subject
+	br.form['text'] = message
+	 
+	result = br.submit()
+	 
+	response = br.response().read()
+	 
+	 
+	if "The e-mail has been sent anonymously!" in response:
+	    print "The email has been sent successfully!! \n The recipient will get it in 12 hours!!"
+	    long()
+	    mainmenu()
+	else:
+	    print "Failed to send email!"
+	    long()
+	    mainmenu()
+def emailspam():
+	sender = raw_input(Fore.CYAN + 'What is your email?  ')
+	password = raw_input('What is your gmail password?  ') #you need to login to send an email
+	message = raw_input('What message do you want to send? ')
+	reciever = raw_input('Who do you want to send this to? ')
+	server = smtplib.SMTP('smtp.gmail.com', 587) #server
+	server.ehlo() #starts server
+	to = [sender, reciever]  
+	subject = '14dead'  
+	body = 'MERCURY'
+	server.starttls()
+	server.login(sender, password)
+	try:
+
+		while True:
+			server.sendmail(sender, to, message)
+			print ('email has been sent to %s') % reciever
+	except KeyboardInterrupt:
+		mainmenu()
 
 def geoLocation(): 
 	try:
@@ -600,14 +760,75 @@ def prompt():
 			prompt()
 	except KeyboardInterrupt:
 		mainmenu()
+def linuxpen():
+	try:
+		clear()
+		print (Fore.GREEN + color.BOLD + '''\033[1m 
+	/$$       /$$                                     /$$$$$$  /$$$$$$   /$$$$$$ 
+	| $$      |__/                                    |_  $$_/ /$$__  $$ /$$__  $$
+	| $$       /$$ /$$$$$$$  /$$   /$$ /$$   /$$        | $$  | $$  \__/| $$  \ $$
+	| $$      | $$| $$__  $$| $$  | $$|  $$ /$$/        | $$  |  $$$$$$ | $$  | $$
+	| $$      | $$| $$  \ $$| $$  | $$ \  $$$$/         | $$   \____  $$| $$  | $$
+	| $$      | $$| $$  | $$| $$  | $$  >$$  $$         | $$   /$$  \ $$| $$  | $$
+	| $$$$$$$$| $$| $$  | $$|  $$$$$$/ /$$/\  $$       /$$$$$$|  $$$$$$/|  $$$$$$/
+	|________/|__/|__/  |__/ \______/ |__/  \__/      |______/ \______/  \______/ 
+	                                                                              
+	                                                                              
+	                                                                            \033[1m  ''') 
+		print ('All downloads are from the offical websites 64bit When Done Push Crtl C')
+		space()
+		print (Fore.WHITE + '''
+		[0] Kail Linux ISO 2.9 GB 	
+		[1] Linux Mint ISO  1.8 GB		
+		[2] Debian  291 MB        	
+		[3] Fedora EXE 1.5GB          
+		[4] Ubuntu ISO 1.5 GB 
+		[99] Exit submenu
+		''')
+		space()	
+		ans_4 = raw_input(Fore.GREEN  + "Linux ~# ")
+		if ans_4 == '0':
+			print ('This might take awhile once done it will be saved to the users or downloads folder')
+			requests.get('http://cdimage.kali.org/kali-2018.1/kali-linux-2018.1-amd64.iso')
+			linux2()
+		if ans_4 == '1':
+			print ('This might take awhile once done it will be saved to the users or downloads folder')
+			requests.get('http://mirrors.advancedhosters.com/linuxmint/isos/stable/18.3/linuxmint-18.3-cinnamon-64bit.iso')
+			linux2()
+		if ans_4 == '2':
+			print ('This might take awhile once done it will be saved to the users or downloads folder')
+			requests.get('https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-9.4.0-amd64-netinst.iso')
+			linux2()
+		if ans_4 == '3':
+			print ('This might take awhile once done it will be saved to the users or downloads folder')
+			requests.get('https://getfedora.org/fmw/FedoraMediaWriter-win32-4.1.0.exe')
+			linux2()
+		if ans_4 == '4':
+			print ('This might take awhile once done it will be saved to the users folder')
+			requests.get('https://www.ubuntu.com/download/desktop/thank-you?country=US&version=16.04.4&architecture=amd64')
+			linux2()
+	except KeyboardInterrupt:
+		linux2()
+def linux2():
+	print ('This next part requires an usb stick.')
+	requests.get('https://www.pendrivelinux.com/downloads/Universal-USB-Installer/Universal-USB-Installer-1.9.8.0.exe')
+	print ('This link will help with pendrivelinux : https://www.cnet.com/how-to/what-to-do-with-your-usb-flash-drive-run-linux/ ')
+	extra_long()
+	mainmenu()
+
 def wordlist():
 	clear()
-	print (Fore.WHITE + '''
- Yb        dP  dP"Yb  88""Yb 88     8888b.  88     88 .dP"Y8 888888 
-  Yb  db  dP  dP   Yb 88__dP 88      8I  Yb 88     88 `Ybo."   88   
- \033[96m  YbdPYbdP   Yb   dP 88"Yb  88  .o  8I  dY 88  .o 88 o.`Y8b   88   
-    YP  YP     YbodP  88  Yb 88ood8 8888Y"  88ood8 88 8bodP'   88   
-
+	print (Fore.WHITE + '''/$$      /$$                           /$$ /$$ /$$             /$$             
+| $$  /$ | $$                          | $$| $$|__/            | $$             
+| $$ /$$$| $$  /$$$$$$   /$$$$$$   /$$$$$$$| $$ /$$  /$$$$$$$ /$$$$$$   /$$$$$$$
+| $$/$$ $$ $$ /$$__  $$ /$$__  $$ /$$__  $$| $$| $$ /$$_____/|_  $$_/  /$$_____/
+]\033[96m| $$$$_  $$$$| $$  \ $$| $$  \__/| $$  | $$| $$| $$|  $$$$$$   | $$   |  $$$$$$ 
+| $$$/ \  $$$| $$  | $$| $$      | $$  | $$| $$| $$ \____  $$  | $$ /$$\____  $$
+| $$/   \  $$|  $$$$$$/| $$      |  $$$$$$$| $$| $$ /$$$$$$$/  |  $$$$//$$$$$$$/
+|__/     \__/ \______/ |__/       \_______/|__/|__/|_______/    \___/ |_______/ 
+                                                                                
+                                                                                
+                                                                                                            
  ''')
 	space()
 	print (Fore.WHITE + '''
@@ -672,31 +893,30 @@ def mainmenu():
 	clear()
 	print (Fore.CYAN +'Dir = '+(x))
 	space()
-	print (Fore.WHITE + ''' 888b     d888                                                                                   
- 8888b   d8888                                                                                   
- 88888b.d88888                                                                                   
- 888Y88888P888       .d88b.       888d888       .d8888b      888  888      888d888      888  888 
- 888 Y888P 888      d8P  Y8b      888P"        d88P"         888  888      888P"        888  888 
-\033[96m 888  Y8P  888      88888888      888          888           888  888      888          888  888 
- 888   "   888      Y8b.          888          Y88b.         Y88b 888      888          Y88b 888 
- 888       888       "Y8888       888           "Y8888P       "Y88888      888           "Y88888 
-                                                                                            888 
-                                                                                       Y8b d88P 
-                                                                                        "Y88P"  
+	print (Fore.WHITE +  color.BOLD + '''  /$$      /$$                                                            
+ | $$$    /$$$                                                            
+ | $$$$  /$$$$  /$$$$$$   /$$$$$$   /$$$$$$$ /$$   /$$  /$$$$$$  /$$   /$$
+ | $$ $$/$$ $$ /$$__  $$ /$$__  $$ /$$_____/| $$  | $$ /$$__  $$| $$  | $$
+ | $$  $$$| $$| $$$$$$$$| $$  \__/| $$      | $$  | $$| $$  \__/| $$  | $$
+\033[96m | $$\  $ | $$| $$_____/| $$      | $$      | $$  | $$| $$      | $$  | $$
+ | $$ \/  | $$|  $$$$$$$| $$      |  $$$$$$$|  $$$$$$/| $$      |  $$$$$$$
+ |__/     |__/ \_______/|__/       \_______/ \______/ |__/       \____  $$
+                                                                /$$  | $$
+                                                               |  $$$$$$/
+                                                                \______/ 
  ''')
 	space()
 	print (Fore.WHITE + '''
-	[0]\033[96m ReadMe and license \033[1;37;40m 	[9]\033[96m SourceCode from website \033[1;37;40m
-	[1]\033[96m Brute force \033[1;37;40m 		[10]\033[96m Ip address from website\033[1;37;40m
-	[2]\033[96m Whats my Ip \033[1;37;40m             	[11]\033[96m Google dorks\033[1;37;40m
-	[3]\033[96m GeoLocation \033[1;37;40m                [12]\033[96m \033[1;37;40m
-	[4]\033[96m Show mac address \033[1;37;40m		[13]\033[96m Download tools\033[1;37;40m
-	[5]\033[96m Website online/offline \033[1;37;40m	[14]\033[96m Wordlists\033[1;37;40m
-	[6]\033[96m File explorer \033[1;37;40m		[15]\033[96m Python\033[1;37;40m
-	[7]\033[96m GitHub cloner \033[1;37;40m		[16]\033[96m Prompt\033[1;37;40m
-	[8]\033[96m Pip installer \033[1;37;40m 		[17]\033[96m Webbrowser\033[1;37;40m
+	[0]\033[96m ReadMe and license \033[1;37;40m 		[9]\033[96m SourceCode from website \033[1;37;40m		[18]\033[96m Gmail Spam\033[1;37;40m
+	[1]\033[96m Brute force \033[1;37;40m 			[10]\033[96m Ip address from website\033[1;37;40m		[19]\033[96m Gmail Spoof\033[1;37;40m
+	[2]\033[96m Whats my Ip \033[1;37;40m             		[11]\033[96m Google dorks\033[1;37;40m                       [20]\033[96m Does Site Exist \033[1;37;40m
+	[3]\033[96m GeoLocation \033[1;37;40m            	        [12]\033[96m Hash encode\033[1;37;40m                        [21]\033[96m Hex decode /encode \033[1;37;40m
+	[4]\033[96m Show mac address \033[1;37;40m			[13]\033[96m Download tools\033[1;37;40m                     [22]\033[96m Find Admin Panel \033[1;37;40m
+	[5]\033[96m Website online/offline \033[1;37;40m		[14]\033[96m Wordlists\033[1;37;40m                          [23]\033[96m Pendrive Linux Tut  \033[1;37;40m
+	[6]\033[96m File explorer \033[1;37;40m			[15]\033[96m Python\033[1;37;40m
+	[7]\033[96m GitHub cloner \033[1;37;40m			[16]\033[96m Prompt\033[1;37;40m
+	[8]\033[96m Pip installer \033[1;37;40m 			[17]\033[96m Webbrowser\033[1;37;40m
 		              
-
 	[100]\033[96m Update\033[1;37;40m	[99]\033[96m Exit tool\033[1;37;40m	
 	''')
 	ans = raw_input(Fore.WHITE + 'Enter a choice  ~# ')
@@ -725,7 +945,7 @@ def mainmenu():
 	if ans =='11':
 		googledork()
 	if ans == '12':
-		ddos()
+		hash()
 	if ans == '13':
 		toolss()
 	if ans == '14':
@@ -737,13 +957,42 @@ def mainmenu():
 		prompt()
 	if ans == '17':
 		webbrowserfunc()
+	if ans == '18':
+		emailspam()
+	if ans == '19':
+		emailspoofsetup()
+	if ans == '20':
+		siteexists()
+	if ans == '21':
+		hex()
+	if ans == '22':
+		admin()
+	if ans == '23':
+		linuxpen()
 	if ans == '99':
+		clear()
 		exit()
 	if ans == '100':
 		update()
 	else:
 		mainmenu()
+def PlatformCheck():
+	if sys.platform == 'win32':
+		print(Fore.CYAN + "Windows Detected")  ##Windows 32-bit Check
+		quick()
+		agreement()
+
+	if sys.platform == 'win64':
+		print(Fore.CYAN + "Windows Detected")  ##Windows 64-bit Check
+		quick()
+		agreement()
+
+	else:
+		print(Fore.RED + "Unix/Linux Kernel detected... mercury is built for windows\n")  #Linux
+		long()
+		agreement()
 try:
+	PlatformCheck()
 	agreement()
 	mainmenu()
 except KeyboardInterrupt:
