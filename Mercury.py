@@ -1,5 +1,5 @@
 #Modules
-import os, sys#Import Other Coding languages
+import os, sys,time#Import Other Coding languages
 try:
 	import colorama #Colorize Text 
 	from colorama import init, Fore, Back, Style
