@@ -4,6 +4,26 @@ Main Menu
 
 ![Screenshot](preview.png)
 
+Installation
+=====
+Requires Python2 (Linux)
+```
+apt-get install python2
+```
+
+
+```
+git clone https://www.github.com/14dead/Mercury
+```
+
+
+
+
+```
+pip install -r requirements.txt
+```
+
+
 
 Features
 ======

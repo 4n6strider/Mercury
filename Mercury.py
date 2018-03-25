@@ -15,22 +15,18 @@ inspired by fsociety and Trity
 
 
 #Modules
-import os, sys,time#Import Other Coding languages
+import os, sys,time
 try:
 	import json
 	import socket
-	import urllib2
+	import urllib
 	import smtplib
 	import hashlib
 	import random
-	import selenium
 	import requests
 	import optparse
-	import colorama
 	import mechanize
-	import pygoogling
 	import ConfigParser
-	import logging,urllib
 	from time import strftime
 	from subprocess import call
 	from getpass import getpass
@@ -68,6 +64,7 @@ except ImportError: #If you dont have the required modules this error will help 
 		os.system('pip install mechanize')
 		os.system('pip install subprocess')
 		os.system('pip install getpass')
+		os.system('pip install ConfigParser')
 
 	'''
 	Allows the program to find the build  
@@ -147,15 +144,15 @@ def sms():
 		phone_num = raw_input(Fore.CYAN + 'Victims phone number: ') + provider
 		gmail = raw_input(Fore.CYAN + 'Your email: ')
 		password = raw_input(Fore.CYAN + 'What is your gmail password? ' )
-	        o = smtplib.SMTP("smtp.gmail.com",587)
-	        o.starttls()
-	        o.login(gmail, password)
+	        server = smtplib.SMTP("smtp.gmail.com",587)
+	        server.starttls()
+	        server.login(gmail, password)
 		message = raw_input('Message: ')
 		times = input( 'How many times:  ')
 	        spam_msg = "From: {} \r\nTo: {} \r\n\r\n {}".format(gmail, phone_num, message)
 		print ( Fore.CYAN + 'Sending...' )
 	        for i in range(times):
-	            o.sendmail(gmail, phone_num, spam_msg)
+	            server.sendmail(gmail, phone_num, spam_msg)
 	        time.sleep(0.1)
 		print ( Fore.GREEN + 'Successfully sent! ')
 		long()
@@ -609,7 +606,7 @@ def networksweb():
 				count3 += 1
 def webbrowserfunc():
 	surf = webdriver.Chrome() #opens chrome you can change to FireFox if you won`t like: surf = webdriver.Firefox()
-	surf.get('https://www.googlecom')
+	surf.get('https://www.google.com')
 
 def mac():
 	os.system('getmac') #For Linux Change to ifconfig -a
@@ -727,24 +724,30 @@ def emailspoofsetup():
 	    long()
 	    mainmenu()
 def emailspam():
-	sender = raw_input(Fore.CYAN + 'What is your gmail?  ')
-	password = getpass('What is your gmail password?  ') #you need to login to send an email
-	message = raw_input('What message do you want to send? ')
-	reciever = raw_input('Who do you want to send this to? ')
-	server = smtplib.SMTP('smtp.gmail.com', 587) #server
-	server.ehlo() #starts server
-	to = [sender, reciever]  
-	subject = '14dead'  
-	body = 'MERCURY'
-	server.starttls()
-	server.login(sender, password)
 	try:
-
-		while True:
-			server.sendmail(sender, reciever, message)
-			print ('email has been sent to %s') % reciever
+		sender = raw_input(Fore.CYAN + 'What is your gmail?  ')
+		password = getpass('What is your gmail password?  ') #you need to login to send an email
+		message = raw_input('What message do you want to send? ')
+		reciever = raw_input('Who do you want to send this to? ')
+		server = smtplib.SMTP('smtp.gmail.com', 587) #server
+		server.ehlo() #starts server
+		to = [sender, reciever]  
+		subject = '14dead'  
+		body = 'MERCURY'
+		server.starttls()
+		server.login(sender, password)
+	except smtplib.SMTPAuthenticationError:
+		print ('Incorrect password! ')
+		emailspam()
 	except KeyboardInterrupt:
 		mainmenu()
+		try:
+
+			while True:
+				server.sendmail(sender, reciever, message)
+				print ('email has been sent to %s') % reciever
+		except KeyboardInterrupt:
+			mainmenu()
 
 def geoLocation(): 
 	try:
@@ -914,7 +917,7 @@ def wordlist():
 def prompt():
 	try:
 		while True:
-			print ('''Mercury Retrograde [Version 1.0.0]
+			print (''' \033[1;37;40mMercury Retrograde [Version 1.0.0]\033[96m
 (c) 2018 14Dead. All rights reserved: To quit type 'stop' and for help type helpme''')
 			print (' ')
 			command = raw_input("C:\users\Mercury> ")
@@ -936,6 +939,8 @@ def prompt():
 				pip_installerp()
 			if command == 'helpme':
 				print helpme()
+				clear()
+				prompt()
 			if command == 'geoip':
 				geoLocationp()
 			if command == 'hex':
