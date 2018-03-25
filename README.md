@@ -66,4 +66,61 @@ shows mac and ip address
 
 
 
-##### Spoof email
+##### Spam email
+spams email in While True loop
+
+
+
+
+##### Download Extra Tools
+Download an extra 16 tools like hydra, metasploit and nmap
+
+
+
+
+#####  Github Cloner & Pip Intsaller
+Installs Pips and Github repos
+
+
+
+
+
+##### Website Cloner
+Extracts the source code from a website
+
+
+
+
+
+##### Ip Address From Website
+Finds ip address from website
+
+
+
+
+##### Prompt
+Acts as a Terminal
+
+
+
+
+##### Python Idle
+Loads up the Python idle
+
+
+
+
+##### Webbrowser
+Loads up Chrome
+
+
+
+
+##### Google Dorks
+Finds vulrnable links
+
+
+
+
+##### Admin Pannel
+Helps find the admin pannel to a website 
