@@ -1,3 +1,19 @@
+'''
+
+
+inspired by fsociety and Trity
+
+
+
+
+'''
+
+
+
+
+
+
+
 #Modules
 import os, sys,time#Import Other Coding languages
 try:
@@ -16,6 +32,8 @@ try:
 	import ConfigParser
 	import logging,urllib
 	from time import strftime
+	from subprocess import call
+	from getpass import getpass
 	from threading import Thread
 	from selenium import webdriver
 	from optparse import OptionParser
@@ -48,6 +66,9 @@ except ImportError: #If you dont have the required modules this error will help 
 		os.system('pip install hashlib')
 		os.system('pip install smtplib')
 		os.system('pip install mechanize')
+		os.system('pip install subprocess')
+		os.system('pip install getpass')
+
 	'''
 	Allows the program to find the build  
 
@@ -119,10 +140,31 @@ def agreement():
          else:
         	agreement()
 	
-		  
+def sms():
+	try:
+		print Fore.CYAN + "Put the @ sign before the provider ex: @vtext.com for Verizon" #@vtext.com #messaging.sprintpcs.com
+	        provider = raw_input(Fore.CYAN + 'Enter cellular provider: ' )
+		phone_num = raw_input(Fore.CYAN + 'Victims phone number: ') + provider
+		gmail = raw_input(Fore.CYAN + 'Your email: ')
+		password = raw_input(Fore.CYAN + 'What is your gmail password? ' )
+	        o = smtplib.SMTP("smtp.gmail.com",587)
+	        o.starttls()
+	        o.login(gmail, password)
+		message = raw_input('Message: ')
+		times = input( 'How many times:  ')
+	        spam_msg = "From: {} \r\nTo: {} \r\n\r\n {}".format(gmail, phone_num, message)
+		print ( Fore.CYAN + 'Sending...' )
+	        for i in range(times):
+	            o.sendmail(gmail, phone_num, spam_msg)
+	        time.sleep(0.1)
+		print ( Fore.GREEN + 'Successfully sent! ')
+		long()
+		mainmenu()
+	except KeyboardInterrupt:
+		mainmenu()		  
 def readme():
 	clear()
-	readme = open(x+'/README!!!.md','r') #opens file
+	readme = open(x+'/README.md','r') #opens file
 	license = open(x+'/License', 'r') #opens file
 	file_contents = readme.read() #reads file
 	file_contents2 = license.read() #reads file
@@ -176,8 +218,13 @@ stop                       Exit
 pips                       Pip installer
 geoip                      GeoIP
 github                     Installs Github repos
-stop                       Returns to main menu		
-
+stop                       Returns to main menu
+sms 		           loads up sms menu
+anongmail	           loads up Gmail-anon
+tools                      Tool submenu
+pendrive                   Pedrive linux menu
+hex                        Encode / decode hex
+hash 	                   Encode hash term
 
 ''')
 	time.sleep(15)
@@ -463,22 +510,24 @@ def brute_force(): #Declares Function
 def admin():
 	links = open(x+'\Resources\links.txt')
 	website = raw_input(Fore.CYAN + 'Enter a site to scan just www: ')
-	print "\033[1m \n\nAvailable links : \n"
+	count4 = 1
 	while True:
-		inner = links.readline()
-		request = "http://"+website+"/"+inner
-	try:
-		response = urlopen(request)
-	except HTTPError as e:
-		pass
-		print Fore.RED + " %s : NOT WORKING"  % requests
-	except URLError as e:
-		pass
-		print Fore.RED + "%s : NOT WORKING "  % requests
-	except KeyboardInterrupt:
-		mainmenu()
-	else:
-		print Fore.GREEN + "[inf] Admin Pannel Found: %s"  % requests
+		try:
+			sub_link = links.readline(count4)
+			website2 = 'https://' + website + '/'+ sub_link
+			req = Request(website2)
+	    		response = urlopen(req)
+		except HTTPError as e:
+			print(Fore.RED + '%s 	is not working.') % website2
+			count4 += 1
+		except URLError as e:
+    			print(Fore.RED + '%s 	is not working.') % website2
+    			count4 += 1
+    		except  KeyboardInterrupt:
+    			mainmenu() 
+		else:
+   			print (Fore.GREEN + '%s is working ') % website2
+   			count4 += 1
 def hash():
 
 	try:
@@ -542,16 +591,20 @@ def networksweb():
 	count3 = 1
 	while True: #loop
 			try:
-				urllib2 .urlopen(url3) #opens link
-		    		status = "Connected" #if no error
+				req = Request(url3)
+	    			response = urlopen(req)
 		    	except KeyboardInterrupt: #returns to main menu if ctrl C is used
 				mainmenu() #mainmenu
-			except:
+			except HTTPError as e:
+		    		status = "Not connected" #if you cant connect then:
+		    		print (Fore.RED+'Attempt '+ Fore.RED +str( count3 )+ Fore.RED +  ' At Host: '+ Fore.RED +url3 + Fore.RED + ': OFFLINE')
+				print (status)
+			except HTTPError as e:
 		    		status = "Not connected" #if you cant connect then:
 		    		print (Fore.RED+'Attempt '+ Fore.RED +str( count3 )+ Fore.RED +  ' At Host: '+ Fore.RED +url3 + Fore.RED + ': OFFLINE')
 				print (status)
 
-			if status == "Connected":
+			else:
 				print (Fore.CYAN +'Attempt '+ Fore.CYAN +str( count3 )+ Fore.CYAN +  ' at host: '+ Fore.CYAN +url3 + Fore.GREEN + ': online')
 				count3 += 1
 def webbrowserfunc():
@@ -674,8 +727,8 @@ def emailspoofsetup():
 	    long()
 	    mainmenu()
 def emailspam():
-	sender = raw_input(Fore.CYAN + 'What is your email?  ')
-	password = raw_input('What is your gmail password?  ') #you need to login to send an email
+	sender = raw_input(Fore.CYAN + 'What is your gmail?  ')
+	password = getpass('What is your gmail password?  ') #you need to login to send an email
 	message = raw_input('What message do you want to send? ')
 	reciever = raw_input('Who do you want to send this to? ')
 	server = smtplib.SMTP('smtp.gmail.com', 587) #server
@@ -688,7 +741,7 @@ def emailspam():
 	try:
 
 		while True:
-			server.sendmail(sender, to, message)
+			server.sendmail(sender, reciever, message)
 			print ('email has been sent to %s') % reciever
 	except KeyboardInterrupt:
 		mainmenu()
@@ -728,37 +781,6 @@ def file():
 	except WindowsError:
 		print ('Invalid location! ')
 		quick()
-		mainmenu()
-def prompt():
-	try:
-		while True:
-			print ('''Mercury Retrograde [Version 1.0.0]
-(c) 2018 14Dead. All rights reserved: To quit type 'stop' and for help type helpme''')
-			print (' ')
-			command = raw_input("C:\users\Mercury> ")
-			if command == ' ':
-				clear()
-				prompt()
-			if command == '':
-				clear()
-				prompt()
-			if command == 'stop':
-				mainmenu()
-			if command == 'github':
-				githubp()
-			if command == 'bruteforce':
-				brute_force()
-			if command == 'source':
-				sourcecodep()
-			if command == 'pips':
-				pip_installerp()
-			if command == 'helpme':
-				print helpme()
-			if command == 'geoip':
-				geoLocationp()
-			os.system(command)
-			prompt()
-	except KeyboardInterrupt:
 		mainmenu()
 def linuxpen():
 	try:
@@ -889,6 +911,55 @@ def wordlist():
 			wordlist()
 	if ans_3 == '99': 
 		mainmenu()
+def prompt():
+	try:
+		while True:
+			print ('''Mercury Retrograde [Version 1.0.0]
+(c) 2018 14Dead. All rights reserved: To quit type 'stop' and for help type helpme''')
+			print (' ')
+			command = raw_input("C:\users\Mercury> ")
+			if command == ' ':
+				clear()
+				prompt()
+			if command == '':
+				clear()
+				prompt()
+			if command == 'stop':
+				mainmenu()
+			if command == 'github':
+				githubp()
+			if command == 'bruteforce':
+				brute_force()
+			if command == 'source':
+				sourcecodep()
+			if command == 'pips':
+				pip_installerp()
+			if command == 'helpme':
+				print helpme()
+			if command == 'geoip':
+				geoLocationp()
+			if command == 'hex':
+				hex()
+				prompt()
+			if command == 'pendrive':
+				linuxpen()
+				prompt()
+			if command == 'hash':
+				hash()
+				prompt()
+			if command == 'sms':
+				sms()
+				prompt()
+			if command == 'anonemail':
+				spoofemailsetup()
+				prompt()
+			if command == 'wordlist':
+				wordlist()
+				prompt()
+			os.system(command)
+			prompt()
+	except KeyboardInterrupt:
+		mainmenu()
 def mainmenu():
 	clear()
 	print (Fore.CYAN +'Dir = '+(x))
@@ -913,7 +984,7 @@ def mainmenu():
 	[3]\033[96m GeoLocation \033[1;37;40m            	        [12]\033[96m Hash encode\033[1;37;40m                        [21]\033[96m Hex decode /encode \033[1;37;40m
 	[4]\033[96m Show mac address \033[1;37;40m			[13]\033[96m Download tools\033[1;37;40m                     [22]\033[96m Find Admin Panel \033[1;37;40m
 	[5]\033[96m Website online/offline \033[1;37;40m		[14]\033[96m Wordlists\033[1;37;40m                          [23]\033[96m Pendrive Linux Tut  \033[1;37;40m
-	[6]\033[96m File explorer \033[1;37;40m			[15]\033[96m Python\033[1;37;40m
+	[6]\033[96m File explorer \033[1;37;40m			[15]\033[96m Python\033[1;37;40m			        [24]\033[96m SMS Spam\033[1;37;40m
 	[7]\033[96m GitHub cloner \033[1;37;40m			[16]\033[96m Prompt\033[1;37;40m
 	[8]\033[96m Pip installer \033[1;37;40m 			[17]\033[96m Webbrowser\033[1;37;40m
 		              
@@ -969,6 +1040,8 @@ def mainmenu():
 		admin()
 	if ans == '23':
 		linuxpen()
+	if ans == '24':
+		sms()
 	if ans == '99':
 		clear()
 		exit()
