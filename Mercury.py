@@ -26,7 +26,6 @@ try:
 	import requests
 	import optparse
 	import mechanize
-	import ConfigParser
 	from time import strftime
 	from subprocess import call
 	from getpass import getpass
@@ -36,12 +35,13 @@ try:
 	from colorama import init, Fore, Back, Style
 	from pygoogling.googling import GoogleSearch
 	from urllib2 import Request, urlopen, URLError, HTTPError
+	import ConfigParser
 except ImportError: #If you dont have the required modules this error will help install them for you
 	print ('\033[4m Do you have all of the needed Modules ? colorama, selenium, requests, json,Google Search, and urllib2!!')
 	time.sleep(1)
 	yn = raw_input('Would You Like To Install Them Now? y/n: ')
 	if yn == 'n': 
-		sys.exit()
+		pass
 	if yn == 'y':
 		os.system('pip install selenium')
 		os.system('pip install colorama')
@@ -741,6 +741,9 @@ def emailspam():
 		emailspam()
 	except KeyboardInterrupt:
 		mainmenu()
+	else:
+		long()
+		mainmenu()
 		try:
 
 			while True:
@@ -990,7 +993,7 @@ def mainmenu():
 	[4]\033[96m Show mac address \033[1;37;40m			[13]\033[96m Download tools\033[1;37;40m                     [22]\033[96m Find Admin Panel \033[1;37;40m
 	[5]\033[96m Website online/offline \033[1;37;40m		[14]\033[96m Wordlists\033[1;37;40m                          [23]\033[96m Pendrive Linux Tut  \033[1;37;40m
 	[6]\033[96m File explorer \033[1;37;40m			[15]\033[96m Python\033[1;37;40m			        [24]\033[96m SMS Spam\033[1;37;40m
-	[7]\033[96m GitHub cloner \033[1;37;40m			[16]\033[96m Prompt\033[1;37;40m
+	[7]\033[96m GitHub cloner \033[1;37;40m			[16]\033[96m Prompt\033[1;37;40m 			         [25]\033[96m \033[1;37;40m
 	[8]\033[96m Pip installer \033[1;37;40m 			[17]\033[96m Webbrowser\033[1;37;40m
 		              
 	[100]\033[96m Update\033[1;37;40m	[99]\033[96m Exit tool\033[1;37;40m	
