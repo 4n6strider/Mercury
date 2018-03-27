@@ -35,6 +35,11 @@ try:
 	from colorama import init, Fore, Back, Style
 	from pygoogling.googling import GoogleSearch
 	from urllib2 import Request, urlopen, URLError, HTTPError
+	builddata = open(x+'/Extra/Build.cfg','r')
+	config = ConfigParser.RawConfigParser() 
+	config.readfp(builddata)
+	build = config.get('mercury', 'build')
+	parser = optparse.OptionParser()
 	import ConfigParser
 except ImportError: #If you dont have the required modules this error will help install them for you
 	print ('\033[4m Do you have all of the needed Modules ? colorama, selenium, requests, json,Google Search, and urllib2!!')
@@ -86,11 +91,6 @@ class color:
    OKGREEN = '\033[92m'
    WARNING = '\033'
 x = os.path.dirname(os.path.abspath(__file__))
-builddata = open(x+'/Extra/Build.cfg','r')
-config = ConfigParser.RawConfigParser() 
-config.readfp(builddata)
-build = config.get('mercury', 'build')
-parser = optparse.OptionParser()
 init(convert=True)
 
 
