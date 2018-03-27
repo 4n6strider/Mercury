@@ -35,11 +35,6 @@ try:
 	from colorama import init, Fore, Back, Style
 	from pygoogling.googling import GoogleSearch
 	from urllib2 import Request, urlopen, URLError, HTTPError
-	builddata = open(x+'/Extra/Build.cfg','r')
-	config = ConfigParser.RawConfigParser() 
-	config.readfp(builddata)
-	build = config.get('mercury', 'build')
-	parser = optparse.OptionParser()
 	import ConfigParser
 except ImportError: #If you dont have the required modules this error will help install them for you
 	print ('\033[4m Do you have all of the needed Modules ? colorama, selenium, requests, json,Google Search, and urllib2!!')
@@ -200,7 +195,6 @@ def googledork():
 
 def update():
 	clear()
-	print (Fore.CYAN + 'You have build ' +build)
 	quick()
 	os.system('git clone https://github.com/14dead/Mercury'+x+'/Update') #Just redownloads the repo
 	sys.exit()
