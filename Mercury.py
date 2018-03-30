@@ -170,13 +170,6 @@ def readme():
 	readme.close()
 	license.cose()
 	mainmenu()
-
-def pythoni():
-	clear()
-	try:
-		os.system('python') #loads python
-	except KeyboardInterrupt: #returns to main menu if ctrl C is used
-		mainmenu()
 def googledork():
 	count3 = 1
 	dork = open(x +'/Resources/GoogleDorks.txt','r') #opens in url
@@ -223,13 +216,13 @@ pendrive                   Pedrive linux menu
 hash 	                   Encode hash term
 
 ''')
-	time.sleep(5)
 def sourcecodep():
 	try:
-		name = raw_input('Enter the File Name [End It With .html !] ') #Save File
+		name1 = raw_input('Enter the File Name') #Save File
+		file = name1+'.html'
 		URL1=raw_input(Fore.CYAN + 'Enter An Url ') #Url
-		html1 = open(name, 'a+') #Writes The File
-		html = open(name, 'w')
+		html1 = open(file, 'a+') #Writes The File
+		html = open(file, 'w')
 		response = urllib2.urlopen(URL1) #Opens Url
 		page_source = response.read() #Reads URL
 		space()
@@ -257,6 +250,9 @@ def twitter():
 	options.add_argument("--ignore-certificate-errors")
 	options.add_argument("--disable-extensions")
 	options.add_argument('headless')
+	options.add_argument("test-type")
+	options.add_argument('--hide-scrollbars')
+	options.add_argument('--disable-gpu')
 	surf = webdriver.Chrome(chrome_options=options) # change to 'Firefox' if running firefox
 	base_url = 'https://twitter.com/'
 	target = base_url+user
@@ -286,6 +282,9 @@ def websitess():
 		options.add_argument("--ignore-certificate-errors")
 		options.add_argument("--disable-extensions")
 		options.add_argument("disable-infobars")
+		options.add_argument("test-type")
+		options.add_argument('--hide-scrollbars')
+		options.add_argument('--disable-gpu')
 		browser = webdriver.Chrome(chrome_options=options) # change to 'Firefox' if running firefox
 	if attempt > 0:
 		pass
@@ -550,6 +549,9 @@ def proxys():
 	options.add_argument("--disable-extensions")
 	options.add_argument("disable-infobars")
 	options.add_argument("headless")
+	options.add_argument("test-type")
+	options.add_argument('--hide-scrollbars')
+	options.add_argument('--disable-gpu')
 	browser = webdriver.Chrome(chrome_options=options) # change to 'Firefox' if running firefox
 	prox_txt = open(x+'/Resources/proxys.txt', 'w')
 	url = 'https://www.us-proxy.org'
@@ -584,15 +586,18 @@ def proxys():
 			prox_txt.close()
 			extra_long()
 			print (Fore.RED + 'Saved Under Resources')
+	except IOError:
+		mainmenu()
 	except KeyboardInterrupt:
 		mainmenu()
 
 def sourcecode():
 	try:
-		name = raw_input('Enter the file name [end it with .html !] ') #Save File
+		name = raw_input(Fore.CYAN + 'Enter the file name: ') #Save File
+		file = name+'.html'
 		URL1=raw_input(Fore.CYAN + 'Enter An Url ') #Url
-		html1 = open(name, 'a+') #Writes The File
-		html = open(name, 'w')
+		html1 = open(file, 'a+') #Writes The File
+		html = open(file, 'w')
 		response = urllib2.urlopen(URL1) #Opens Url
 		page_source = response.read() #Reads URL
 		space()
@@ -618,24 +623,35 @@ def siteexists():
         site = raw_input(Fore.CYAN + 'Enter a website: ')
         urllib2.urlopen(site)
     except urllib2.HTTPError, e:
-        print ('Error:')
+        print (Fore.RED + site  + ' Does not exist')
         print(e.code)
         quick()
         mainmenu()
     except urllib2.URLError, e:
-        print ('Error:')
-        print(e.args)
+        print (Fore.RED + site + ' Does not exist')
         quick()
         mainmenu()
     except KeyboardInterrupt:
       mainmenu()
+    except ValueError:
+    	print (Fore.RED + 'Unknown url type / invalid url')
+    	quick()
+    	mainmenu()
     else:
         	print ('%s Exists ') % site
         	long()
         	mainmenu()
 def brute_force(): #Declares Function
 	f = open(x+'/Resources/passwords.txt', 'r')
-	browser = webdriver.Chrome() #Opens Chrome
+	options = webdriver.ChromeOptions()
+	options.add_argument("--disable-popup-blocking")
+	options.add_argument("--ignore-certificate-errors")
+	options.add_argument("--disable-extensions")
+	options.add_argument("disable-infobars")
+	options.add_argument("test-type")
+	options.add_argument('--hide-scrollbars')
+	options.add_argument('--disable-gpu')
+	browser = webdriver.Chrome(chrome_options=options) #Opens Chrome
 	username = raw_input(Fore.CYAN + '	What is the Username? ') #Username
 	USS = raw_input('		What is the CSS Selector for the Username? ') #CSS Selector Username
 	PSS = raw_input(' 			What is the CSS Selector for the Password? ') #CSS Selector Password
@@ -669,19 +685,15 @@ def brute_force(): #Declares Function
 			quick()
 			mainmenu()
 			f.close()
-		except selenium.common.exceptions.StaleElementReferenceException: #Selector wasnt found maybe a typo
-			print (Fore.RED + 'SELECTOR NOT FOUND!!!')
-			extra_long()
-			mainmenu()
-			f.close()
-		except selenium.common.exceptions.WebDriverException: #Chrome was closed
-			print (Fore.CYAN + 'Chrome was closed! ')
-			extra_long()
-			mainmenu()
-			f.close()
 		except KeyboardInterrupt: #returns to main menu if ctrl C is used
 			f.close()
 			mainmenu()
+		except:
+			print (Fore.RED + 'SELECTOR NOT FOUND!!!')
+			print (Fore.RED + 'Or Chrome was closed') 
+			extra_long()
+			mainmenu()
+			f.close()
 def admin():
 	links = open(x+'\Resources\links.txt')
 	website = raw_input(Fore.CYAN + 'Enter a site to scan just www: ')
@@ -755,6 +767,10 @@ def ipaddress():
 		long()
 		clear()
 		mainmenu()
+	except socket.gaierror:
+		print (Fore.RED + 'Couldnt retrieve the ipaddress')
+		quick()
+		mainmenu()
 	except KeyboardInterrupt:
 		mainmenu()
 	except AttributeError: #enter link like www.google.com rather than https://www.google.com
@@ -787,21 +803,35 @@ def networksweb():
 		    		status = "UKNOWN" #if you cant connect then:
 		    		print (Fore.RED+'Attempt '+ Fore.RED +str( count3 )+ Fore.RED +  ' At Host: '+ Fore.RED +url3 + Fore.RED + ': Closed By Host')
 				print (status)
+			except ValueError:
+				print (Fore.RED + 'Unknown url type/ Invalid url')
+				quick()
+				mainmenu()
 			else:
 				print (Fore.CYAN +'Attempt '+ Fore.CYAN +str( count3 )+ Fore.CYAN +  ' at host: '+ Fore.CYAN +url3 + Fore.GREEN + ': online')
 				count3 += 1
 def webbrowserfunc():
+	print (Fore.RED + 'Ex: 123.78.65:80')
+	PROXY = raw_input(Fore.CYAN + 'Enter a proxy: ')
 	options = webdriver.ChromeOptions()
 	options.add_argument("--disable-popup-blocking")
 	options.add_argument("--ignore-certificate-errors")
 	options.add_argument("--disable-extensions")
-	surf = webdriver.Chrome(chrome_options=options) # change to 'Firefox' if running firefox
-	surf.get('https://www.google.com')
+	options.add_argument("disable-infobars")
+	options.add_argument("test-type")
+	options.add_argument('--hide-scrollbars')
+	options.add_argument('--disable-gpu')
+	options.add_argument('--proxy-server=%s' % PROXY)
+	anonbrowser = webdriver.Chrome(chrome_options=options)
+	anonbrowser.get('http://www.ip-adress.eu/')
 
 def mac():
-	os.system('getmac') #For Linux Change to ifconfig -a
-	long()
-	mainmenu()
+	try:
+		os.system('getmac') #For Linux Change to ifconfig -a
+		long()
+		mainmenu()
+	except KeyboardInterrupt:
+		mainmenu()
 def myip():
 	print (	'Your ip is ' + Fore.CYAN + socket.gethostbyname(socket.gethostname())) #gets ip address from socket linux always returns 12.0.0.1
 	long()
@@ -1179,7 +1209,7 @@ def mainmenu():
 	[5]\033[96m Website online/offline \033[1;37;40m		[14]\033[96m Wordlists\033[1;37;40m                          [23]\033[96m Pendrive Linux Tut  \033[1;37;40m
 	[6]\033[96m File explorer \033[1;37;40m			[15]\033[96m Proxy Scraper \033[1;37;40m                     [24]\033[96m SMS Spam\033[1;37;40m
 	[7]\033[96m GitHub cloner \033[1;37;40m			[16]\033[96m Prompt\033[1;37;40m 			        [25]\033[96m Websites \033[1;37;40m
-	[8]\033[96m Pip installer \033[1;37;40m 			[17]\033[96m Webbrowser\033[1;37;40m 	                [26]\033[96m Twitter Info Grabber \033[1;37;40m
+	[8]\033[96m Pip installer \033[1;37;40m 			[17]\033[96m Proxy Browser\033[1;37;40m 	                [26]\033[96m Twitter Info Grabber \033[1;37;40m
 		              
 	[100]\033[96m Update\033[1;37;40m	[99]\033[96m Exit tool\033[1;37;40m	
 	''')
