@@ -19,7 +19,7 @@ import os, sys,time
 try:
 	import json
 	import socket
-	import urllib
+	import urllib2
 	import smtplib
 	import hashlib
 	import random
@@ -86,6 +86,7 @@ class color:
    WARNING = '\033'
 x = os.path.dirname(os.path.abspath(__file__))
 init(convert=True)
+
 
 
 termsAndConditions = Fore.RED + '''\033[4m Don`t Use Mercury To:
@@ -195,7 +196,7 @@ def googledork():
 def update():
 	clear()
 	quick()
-	os.system('git clone https://github.com/14dead/Mercury'+x+'/Update') #Just redownloads the repo
+	os.system('git clone https://github.com/MetaChar/Mercury'+x+'/Update') #Just redownloads the repo
 	sys.exit()
 def helpme():
 	print ('''
@@ -213,12 +214,10 @@ sms 		           loads up sms menu
 anongmail	           loads up Gmail-anon
 tools                      Tool submenu
 pendrive                   Pedrive linux menu
-hex                        Encode / decode hex
 hash 	                   Encode hash term
 
 ''')
-	time.sleep(15)
-	prompt()
+	time.sleep(5)
 def sourcecodep():
 	try:
 		name = raw_input('Enter the File Name [End It With .html !] ') #Save File
@@ -238,6 +237,129 @@ def sourcecodep():
 	except IOError: #very rare error dont worry
 		print ('File was not found \: ')
 		prompt()
+def twitter():
+	print (Fore.CYAN + '	Exclude the @ sign! ')
+	user = raw_input('		Enter a Twitter handle: ')
+	options = webdriver.ChromeOptions()
+	options.add_argument("--disable-popup-blocking")
+	options.add_argument("--ignore-certificate-errors")
+	options.add_argument("--disable-extensions")
+	options.add_argument('headless')
+	surf = webdriver.Chrome(chrome_options=options) # change to 'Firefox' if running firefox
+	base_url = 'https://twitter.com/'
+	target = base_url+user
+	surf.get(target)
+	try:
+		followers = surf.find_element_by_css_selector('#page-container > div.ProfileCanopy.ProfileCanopy--withNav.ProfileCanopy--large.js-variableHeightTopBar > div > div.ProfileCanopy-navBar.u-boxShadow > div > div > div.Grid-cell.u-size2of3.u-lg-size3of4 > div > div > ul > li.ProfileNav-item.ProfileNav-item--followers > a > span.ProfileNav-value')
+		tweets = surf.find_element_by_css_selector('#page-container > div.ProfileCanopy.ProfileCanopy--withNav.ProfileCanopy--large.js-variableHeightTopBar > div > div.ProfileCanopy-navBar.u-boxShadow > div > div > div.Grid-cell.u-size2of3.u-lg-size3of4 > div > div > ul > li.ProfileNav-item.ProfileNav-item--tweets.is-active > a > span.ProfileNav-value')
+		date_joined = surf.find_element_by_css_selector('#page-container > div.AppContainer > div > div > div.Grid-cell.u-size1of3.u-lg-size1of4 > div > div > div > div.ProfileHeaderCard > div.ProfileHeaderCard-joinDate > span.ProfileHeaderCard-joinDateText.js-tooltip.u-dir') #Finds Selector
+		location = surf.find_element_by_css_selector('#page-container > div.AppContainer > div > div > div.Grid-cell.u-size1of3.u-lg-size1of4 > div > div > div > div.ProfileHeaderCard > div.ProfileHeaderCard-location > span.ProfileHeaderCard-locationText.u-dir')
+		print (Fore.GREEN + date_joined.text)
+		print (Fore.GREEN + 'Location: ' + location.text)
+		print (Fore.YELLOW + 'Followers: ' + followers.text)
+		print (Fore.YELLOW + 'Tweets: '+ tweets.text)
+		long()
+		mainmenu()
+	except:
+		followers = surf.find_element_by_css_selector('#page-container > div.ProfileCanopy.ProfileCanopy--withNav.ProfileCanopy--large.js-variableHeightTopBar > div > div.ProfileCanopy-navBar.u-boxShadow > div > div > div.Grid-cell.u-size2of3.u-lg-size3of4 > div > div > ul > li.ProfileNav-item.ProfileNav-item--followers > a > span.ProfileNav-value')
+		tweets = surf.find_element_by_css_selector('#page-container > div.ProfileCanopy.ProfileCanopy--withNav.ProfileCanopy--large.js-variableHeightTopBar > div > div.ProfileCanopy-navBar.u-boxShadow > div > div > div.Grid-cell.u-size2of3.u-lg-size3of4 > div > div > ul > li.ProfileNav-item.ProfileNav-item--tweets.is-active > a > span.ProfileNav-value')
+		print (Fore.YELLOW + 'Followers: ' + followers.text)
+		print (Fore.YELLOW + 'Tweets: '+ tweets.text)
+		long()
+		mainmenu()
+
+def websitess():
+	global browser
+	global attempt
+	if attempt == 0:
+		options = webdriver.ChromeOptions()
+		options.add_argument("--disable-popup-blocking")
+		options.add_argument("--ignore-certificate-errors")
+		options.add_argument("--disable-extensions")
+		options.add_argument("disable-infobars")
+		browser = webdriver.Chrome(chrome_options=options) # change to 'Firefox' if running firefox
+	if attempt > 0:
+		pass
+	clear()
+	print (Fore.WHITE + color.BOLD +''' /$$       /$$           /$$                      
+| $$      |__/          | $$                      
+| $$       /$$ /$$$$$$$ | $$   /$$  /$$$$$$$      
+| $$      | $$| $$__  $$| $$  /$$/ /$$_____/      
+  \033[96m| $$      | $$| $$  \ $$| $$$$$$/ |  $$$$$$       
+| $$      | $$| $$  | $$| $$_  $$  \____  $$      
+| $$$$$$$$| $$| $$  | $$| $$ \  $$ /$$$$$$$/      
+|________/|__/|__/  |__/|__/  \__/|_______/       
+		                                                  
+		                                                  
+		                                                  ''')
+	space()
+	print (Fore.WHITE + '''
+	[0]\033[96m Hack5\033[1;37;40m		[9]\033[96m Reddit\033[1;37;40m
+	[1]\033[96m Github \033[1;37;40m		[10]\033[96m Google\033[1;37;40m
+	[2]\033[96m HackThisSite \033[1;37;40m       [11]\033[96m DarkNet\033[1;37;40m
+	[3]\033[96m Dark More Ops \033[1;37;40m	[12]\033[96m Stack Overflow \033[1;37;40m
+	[4]\033[96m Kali Linux \033[1;37;40m         [13]\033[96m Arduino\033[1;37;40m
+	[5]\033[96m Defcon \033[1;37;40m		[14]\033[96m RaspberryPie\033[1;37;40m
+	[6]\033[96m Pycon \033[1;37;40m
+	[7]\033[96m Python.org \033[1;37;40m
+	[8]\033[96m HackThis! \033[1;37;40m
+
+
+	[99]\033[96m Exit submenu\033[1;37;40m
+										            ''')
+	ans_5 = raw_input('Links ~# ')
+	attempt += 1
+	if ans_5 == '0':
+		browser.get('https://www.hak5.org/')
+		websitess()
+	if ans_5 == '1':
+		browser.get('https://github.com/')
+		websitess()
+	if ans_5 == '2':
+		browser.get('https://www.hackthissite.org/')
+		websitess()
+	if ans_5 == '3':
+		browser.get('https://www.darkmoreops.com/')
+		websitess()
+	if ans_5 == '4':
+		browser.get('https://docs.kali.org/category/introduction')
+		websitess()
+	if ans_5 == '5':
+		browser.get('https://www.defcon.org/')
+		websitess()
+	if ans_5 == '6':
+		browser.get('https://us.pycon.org/2018/')
+		websitess()
+	if ans_5 == '7':
+		browser.get('https://www.python.org/')
+		websitess()
+	if ans_5 == '8':
+		browser.get('https://www.hackthis.co.uk/')
+		websitess()
+	if ans_5 == '9':
+		browser.get('https://www.reddit.com/')
+		websitess()
+	if ans_5 == '10':
+		browser.get('https://www.google.com/')
+		websitess()
+	if ans_5 == '11':
+		browser.get('https://www.darknet.org.uk/')
+		websitess()
+	if ans_5 == '12':
+		browser.get('https://stackoverflow.com/')
+		websitess()
+	if ans_5 == '13':
+		browser.get('https://www.arduino.cc/')
+		websitess()
+	if ans_5 == '14':
+		browser.get('https://www.raspberrypi.org/')
+		websitess()
+	if ans_5 == '99':
+		attempt = 0 
+		mainmenu()
+
+
+
 def toolss():
 	clear()
 	print (Fore.WHITE +  color.BOLD + ''' /$$$$$$$$                  /$$                       /$$      
@@ -400,7 +522,7 @@ def toolss():
 			os.system('git clone https://github.com/Manisso/fsociety '+x+'/Tools/Fsociety')
 			os.system('git clone https://github.com/arismelachroinos/lscript '+x+'/Tools/LazyScript')
 			os.system('git clone https://github.com/nmap/nmap '+x+'/Tools/Nmap')
-			os.system('git clone https://github.com/14dead/Mercury '+x+'/Tools/Mercury')
+			os.system('git clone https://github.com/MetaChar/Mercury '+x+'/Tools/Mercury')
 			os.system('git clone https://github.com/rapid7/metasploit-framework '+x+'/Tools/Metasploit')
 
 			toolss()
@@ -593,7 +715,14 @@ def networksweb():
 		    		status = "Not connected" #if you cant connect then:
 		    		print (Fore.RED+'Attempt '+ Fore.RED +str( count3 )+ Fore.RED +  ' At Host: '+ Fore.RED +url3 + Fore.RED + ': OFFLINE')
 				print (status)
-
+			except urllib2.URLError:
+		    		status = "Not connected" #if you cant connect then:
+		    		print (Fore.RED+'Attempt '+ Fore.RED +str( count3 )+ Fore.RED +  ' At Host: '+ Fore.RED +url3 + Fore.RED + ': OFFLINE')
+				print (status)
+			except socket.error:
+		    		status = "UKNOWN" #if you cant connect then:
+		    		print (Fore.RED+'Attempt '+ Fore.RED +str( count3 )+ Fore.RED +  ' At Host: '+ Fore.RED +url3 + Fore.RED + ': Closed By Host')
+				print (status)
 			else:
 				print (Fore.CYAN +'Attempt '+ Fore.CYAN +str( count3 )+ Fore.CYAN +  ' at host: '+ Fore.CYAN +url3 + Fore.GREEN + ': online')
 				count3 += 1
@@ -913,10 +1042,7 @@ def wordlist():
 def prompt():
 	try:
 		while True:
-			print (''' \033[1;37;40mMercury Retrograde [Version 1.0.0]\033[96m
-(c) 2018 14Dead. All rights reserved: To quit type 'stop' and for help type helpme''')
-			print (' ')
-			command = raw_input("C:\users\Mercury> ")
+			command = raw_input(Fore.CYAN + "$User@Mercury> ")
 			if command == ' ':
 				clear()
 				prompt()
@@ -939,8 +1065,6 @@ def prompt():
 				prompt()
 			if command == 'geoip':
 				geoLocationp()
-			if command == 'hex':
-				hex()
 				prompt()
 			if command == 'pendrive':
 				linuxpen()
@@ -986,8 +1110,8 @@ def mainmenu():
 	[4]\033[96m Show mac address \033[1;37;40m			[13]\033[96m Download tools\033[1;37;40m                     [22]\033[96m Find Admin Panel \033[1;37;40m
 	[5]\033[96m Website online/offline \033[1;37;40m		[14]\033[96m Wordlists\033[1;37;40m                          [23]\033[96m Pendrive Linux Tut  \033[1;37;40m
 	[6]\033[96m File explorer \033[1;37;40m			[15]\033[96m Python\033[1;37;40m			        [24]\033[96m SMS Spam\033[1;37;40m
-	[7]\033[96m GitHub cloner \033[1;37;40m			[16]\033[96m Prompt\033[1;37;40m 			         [25]\033[96m \033[1;37;40m
-	[8]\033[96m Pip installer \033[1;37;40m 			[17]\033[96m Webbrowser\033[1;37;40m
+	[7]\033[96m GitHub cloner \033[1;37;40m			[16]\033[96m Prompt\033[1;37;40m 			        [25]\033[96m Websites \033[1;37;40m
+	[8]\033[96m Pip installer \033[1;37;40m 			[17]\033[96m Webbrowser\033[1;37;40m 	                      [26]\033[96m Twitter Info Grabber \033[1;37;40m
 		              
 	[100]\033[96m Update\033[1;37;40m	[99]\033[96m Exit tool\033[1;37;40m	
 	''')
@@ -1026,6 +1150,7 @@ def mainmenu():
 		pythoni()
 	if ans == '16':
 		clear()
+		helpme()
 		prompt()
 	if ans == '17':
 		webbrowserfunc()
@@ -1043,6 +1168,10 @@ def mainmenu():
 		linuxpen()
 	if ans == '24':
 		sms()
+	if ans == '25':
+		websitess()
+	if ans == '26':
+		twitter()
 	if ans == '99':
 		clear()
 		exit()
@@ -1066,8 +1195,9 @@ def PlatformCheck():
 		long()
 		agreement()
 try:
-	PlatformCheck()
+	attempt = 0
 	agreement()
+	PlatformCheck()
 	mainmenu()
 except KeyboardInterrupt:
 	mainmenu()
