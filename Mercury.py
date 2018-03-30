@@ -35,6 +35,7 @@ try:
 	from colorama import init, Fore, Back, Style
 	from pygoogling.googling import GoogleSearch
 	from urllib2 import Request, urlopen, URLError, HTTPError
+	from selenium.common.exceptions import NoSuchElementException
 except ImportError: #If you dont have the required modules this error will help install them for you
 	print ('\033[4m Do you have all of the needed Modules ? colorama, selenium, requests, json,Google Search, and urllib2!!')
 	time.sleep(1)
@@ -166,6 +167,8 @@ def readme():
 	clear()
 	print (file_contents2) #print License
 	extra_long()
+	readme.close()
+	license.cose()
 	mainmenu()
 
 def pythoni():
@@ -187,10 +190,13 @@ def googledork():
 			
 	except IOError:
 		mainmenu()
+		dork.close()
 	except KeyboardInterrupt: #returns to main menu if ctrl C is used
 		mainmenu()
+		dork.close()
 	except UnicodeEncodeError: #There Is an error if the encoding is not utf 8 you can change pass to just keep going even after error
 		extra_long()
+		dork.close()
 		mainmenu()
 
 def update():
@@ -230,13 +236,19 @@ def sourcecodep():
 		print >>html,  page_source #Change to python3 Syntax aka file. write
 		print ('Done ! saved under users! ') #%users%
 		quick()
+		html.close()
+		html1.close()
 		prompt()
 	except KeyboardInterrupt:
 		print ('Stopped! ')
 		prompt()
+		html.close()
+		html1.close()
 	except IOError: #very rare error dont worry
 		print ('File was not found \: ')
 		prompt()
+		html.close()
+		html1.close()
 def twitter():
 	print (Fore.CYAN + '	Exclude the @ sign! ')
 	user = raw_input('		Enter a Twitter handle: ')
@@ -254,18 +266,15 @@ def twitter():
 		tweets = surf.find_element_by_css_selector('#page-container > div.ProfileCanopy.ProfileCanopy--withNav.ProfileCanopy--large.js-variableHeightTopBar > div > div.ProfileCanopy-navBar.u-boxShadow > div > div > div.Grid-cell.u-size2of3.u-lg-size3of4 > div > div > ul > li.ProfileNav-item.ProfileNav-item--tweets.is-active > a > span.ProfileNav-value')
 		date_joined = surf.find_element_by_css_selector('#page-container > div.AppContainer > div > div > div.Grid-cell.u-size1of3.u-lg-size1of4 > div > div > div > div.ProfileHeaderCard > div.ProfileHeaderCard-joinDate > span.ProfileHeaderCard-joinDateText.js-tooltip.u-dir') #Finds Selector
 		location = surf.find_element_by_css_selector('#page-container > div.AppContainer > div > div > div.Grid-cell.u-size1of3.u-lg-size1of4 > div > div > div > div.ProfileHeaderCard > div.ProfileHeaderCard-location > span.ProfileHeaderCard-locationText.u-dir')
+		likes = surf.find_element_by_css_selector('#page-container > div.ProfileCanopy.ProfileCanopy--withNav.ProfileCanopy--large.js-variableHeightTopBar > div > div.ProfileCanopy-navBar.u-boxShadow > div > div > div.Grid-cell.u-size2of3.u-lg-size3of4 > div > div > ul > li.ProfileNav-item.ProfileNav-item--favorites > a > span.ProfileNav-value')
 		print (Fore.GREEN + date_joined.text)
 		print (Fore.GREEN + 'Location: ' + location.text)
 		print (Fore.YELLOW + 'Followers: ' + followers.text)
 		print (Fore.YELLOW + 'Tweets: '+ tweets.text)
+		print (Fore.YELLOW + 'Likes: '+likes.text)
 		long()
 		mainmenu()
 	except:
-		followers = surf.find_element_by_css_selector('#page-container > div.ProfileCanopy.ProfileCanopy--withNav.ProfileCanopy--large.js-variableHeightTopBar > div > div.ProfileCanopy-navBar.u-boxShadow > div > div > div.Grid-cell.u-size2of3.u-lg-size3of4 > div > div > ul > li.ProfileNav-item.ProfileNav-item--followers > a > span.ProfileNav-value')
-		tweets = surf.find_element_by_css_selector('#page-container > div.ProfileCanopy.ProfileCanopy--withNav.ProfileCanopy--large.js-variableHeightTopBar > div > div.ProfileCanopy-navBar.u-boxShadow > div > div > div.Grid-cell.u-size2of3.u-lg-size3of4 > div > div > ul > li.ProfileNav-item.ProfileNav-item--tweets.is-active > a > span.ProfileNav-value')
-		print (Fore.YELLOW + 'Followers: ' + followers.text)
-		print (Fore.YELLOW + 'Tweets: '+ tweets.text)
-		long()
 		mainmenu()
 
 def websitess():
@@ -533,6 +542,50 @@ def toolss():
 		mainmenu()
 	else:
 		toolss()
+proxys_num2 = 2
+def proxys():
+	options = webdriver.ChromeOptions()
+	options.add_argument("--disable-popup-blocking")
+	options.add_argument("--ignore-certificate-errors")
+	options.add_argument("--disable-extensions")
+	options.add_argument("disable-infobars")
+	options.add_argument("headless")
+	browser = webdriver.Chrome(chrome_options=options) # change to 'Firefox' if running firefox
+	prox_txt = open(x+'/Resources/proxys.txt', 'w')
+	url = 'https://www.us-proxy.org'
+	browser.get(url)
+	try:
+		proxys_num = 2
+		while True:
+			if proxys_num < 22:
+				prox_even = browser.find_element_by_css_selector('tr.even:nth-child('+str(proxys_num)+') > td:nth-child(1)')
+				port_even = browser.find_element_by_css_selector('tr.even:nth-child('+str(proxys_num)+') > td:nth-child(2)')
+				last_checked = browser.find_element_by_css_selector('tr.even:nth-child('+str(proxys_num)+') > td:nth-child(8)')
+				https = browser.find_element_by_css_selector('tr.even:nth-child('+str(proxys_num)+') > td:nth-child(7)')
+				print (Fore.GREEN + prox_even.text + ' : ' + port_even.text + '  '+ last_checked.text + 'Https: '+ Fore.RED + https.text)
+				print >>prox_txt, str(prox_even.text) + ':'+str(port_even.text) + '\n'
+				proxys_num += 2
+			if proxys_num == 22:
+				global proxys_num2
+				next_page = browser.find_element_by_css_selector('li.fg-button:nth-child(4) > a:nth-child(1)').click()
+				next_page
+				prox_even = browser.find_element_by_css_selector('tr.even:nth-child('+str(proxys_num2)+') > td:nth-child(1)')
+				port_even = browser.find_element_by_css_selector('tr.even:nth-child('+str(proxys_num2)+') > td:nth-child(2)')
+				last_checked = browser.find_element_by_css_selector('tr.even:nth-child('+str(proxys_num2)+') > td:nth-child(8)')
+				https = browser.find_element_by_css_selector('tr.even:nth-child('+str(proxys_num2)+') > td:nth-child(7)')
+				print (Fore.GREEN + prox_even.text + ' : ' + port_even.text + '  '+ last_checked.text + 'Https: '+ Fore.RED + https.text)
+				print >>prox_txt, str(prox_even.text) + ':'+str(port_even.text)  + '\n'
+				proxys_num2 += 2
+			if proxys_num2 == 40:
+				extra_long()
+				print (Fore.RED + 'Saved Under Resources')
+				prox_txt.close()
+	except NoSuchElementException:
+			prox_txt.close()
+			extra_long()
+			print (Fore.RED + 'Saved Under Resources')
+	except KeyboardInterrupt:
+		mainmenu()
 
 def sourcecode():
 	try:
@@ -547,13 +600,19 @@ def sourcecode():
 		print ('Done ! saved under "Users" ')
 		quick()
 		clear()
+		html.close()
+		html1.close()		
+		mainmenu()
 	except KeyboardInterrupt:
 		print ('Stopped! ')
+		html.close()
+		html1.close()
 		mainmenu()
 	except IOError:
 		print ('File was not found \: ')
+		html.close()
+		html1.close()
 		mainmenu()
-	mainmenu()
 def siteexists():
     try:
         site = raw_input(Fore.CYAN + 'Enter a website: ')
@@ -609,15 +668,19 @@ def brute_force(): #Declares Function
 			print ('There was a random error sorry! ')
 			quick()
 			mainmenu()
+			f.close()
 		except selenium.common.exceptions.StaleElementReferenceException: #Selector wasnt found maybe a typo
 			print (Fore.RED + 'SELECTOR NOT FOUND!!!')
 			extra_long()
 			mainmenu()
+			f.close()
 		except selenium.common.exceptions.WebDriverException: #Chrome was closed
 			print (Fore.CYAN + 'Chrome was closed! ')
 			extra_long()
 			mainmenu()
+			f.close()
 		except KeyboardInterrupt: #returns to main menu if ctrl C is used
+			f.close()
 			mainmenu()
 def admin():
 	links = open(x+'\Resources\links.txt')
@@ -636,7 +699,8 @@ def admin():
     			print(Fore.RED + '%s 	is not working.') % website2
     			count4 += 1
     		except  KeyboardInterrupt:
-    			mainmenu() 
+    			mainmenu()
+    			links.close()
 		else:
    			print (Fore.GREEN + '%s is working ') % website2
    			count4 += 1
@@ -727,7 +791,11 @@ def networksweb():
 				print (Fore.CYAN +'Attempt '+ Fore.CYAN +str( count3 )+ Fore.CYAN +  ' at host: '+ Fore.CYAN +url3 + Fore.GREEN + ': online')
 				count3 += 1
 def webbrowserfunc():
-	surf = webdriver.Chrome() #opens chrome you can change to FireFox if you won`t like: surf = webdriver.Firefox()
+	options = webdriver.ChromeOptions()
+	options.add_argument("--disable-popup-blocking")
+	options.add_argument("--ignore-certificate-errors")
+	options.add_argument("--disable-extensions")
+	surf = webdriver.Chrome(chrome_options=options) # change to 'Firefox' if running firefox
 	surf.get('https://www.google.com')
 
 def mac():
@@ -1109,9 +1177,9 @@ def mainmenu():
 	[3]\033[96m GeoLocation \033[1;37;40m            	        [12]\033[96m Hash encode\033[1;37;40m                        [21]\033[96m Hex decode /encode \033[1;37;40m
 	[4]\033[96m Show mac address \033[1;37;40m			[13]\033[96m Download tools\033[1;37;40m                     [22]\033[96m Find Admin Panel \033[1;37;40m
 	[5]\033[96m Website online/offline \033[1;37;40m		[14]\033[96m Wordlists\033[1;37;40m                          [23]\033[96m Pendrive Linux Tut  \033[1;37;40m
-	[6]\033[96m File explorer \033[1;37;40m			[15]\033[96m Python\033[1;37;40m			        [24]\033[96m SMS Spam\033[1;37;40m
+	[6]\033[96m File explorer \033[1;37;40m			[15]\033[96m Proxy Scraper \033[1;37;40m                     [24]\033[96m SMS Spam\033[1;37;40m
 	[7]\033[96m GitHub cloner \033[1;37;40m			[16]\033[96m Prompt\033[1;37;40m 			        [25]\033[96m Websites \033[1;37;40m
-	[8]\033[96m Pip installer \033[1;37;40m 			[17]\033[96m Webbrowser\033[1;37;40m 	                      [26]\033[96m Twitter Info Grabber \033[1;37;40m
+	[8]\033[96m Pip installer \033[1;37;40m 			[17]\033[96m Webbrowser\033[1;37;40m 	                [26]\033[96m Twitter Info Grabber \033[1;37;40m
 		              
 	[100]\033[96m Update\033[1;37;40m	[99]\033[96m Exit tool\033[1;37;40m	
 	''')
@@ -1147,7 +1215,7 @@ def mainmenu():
 	if ans == '14':
 		wordlist()
 	if ans == '15':
-		pythoni()
+		proxys()
 	if ans == '16':
 		clear()
 		helpme()

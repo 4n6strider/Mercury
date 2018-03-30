@@ -13,7 +13,7 @@ apt-get install python2
 
 
 ```
-git clone https://www.github.com/14dead/Mercury
+git clone https://www.github.com/MetaChar/Mercury
 ```
 
 
@@ -147,4 +147,20 @@ Finds vulrnable links
 
 
 ##### Admin Pannel
-Helps find the admin pannel to a website 
+Helps find the admin pannel to a website
+
+
+
+##### Websites
+Access some of the best hacking & robotoics websites.
+
+
+
+##### Proxy Scraper
+Find the best Us proxys!
+
+
+
+##### Twitter Info Grab
+
+Grab a twitter users basic info
