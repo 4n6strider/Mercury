@@ -24,14 +24,12 @@ try:
 	import hashlib
 	import random
 	import requests
-	import optparse
 	import mechanize
 	from time import strftime
 	from subprocess import call
 	from getpass import getpass
 	from threading import Thread
 	from selenium import webdriver
-	from optparse import OptionParser
 	from colorama import init, Fore, Back, Style
 	from pygoogling.googling import GoogleSearch
 	from urllib2 import Request, urlopen, URLError, HTTPError
@@ -1190,6 +1188,8 @@ def prompt():
 			prompt()
 	except KeyboardInterrupt:
 		mainmenu()
+proxys_num2 = 0
+proxys_num = 0
 def mainmenu():
 	clear()
 	print (Fore.CYAN +'Dir = '+(x))
