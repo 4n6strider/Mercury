@@ -30,10 +30,11 @@ try:
 	from getpass import getpass
 	from threading import Thread
 	from selenium import webdriver
+	from selenium.common.exceptions import *
 	from colorama import init, Fore, Back, Style
 	from pygoogling.googling import GoogleSearch
 	from urllib2 import Request, urlopen, URLError, HTTPError
-	from selenium.common.exceptions import NoSuchElementException
+	from selenium.common.exceptions import WebDriverException
 except ImportError: #If you dont have the required modules this error will help install them for you
 	print ('\033[4m Do you have all of the needed Modules ? colorama, selenium, requests, json,Google Search, and urllib2!!')
 	time.sleep(1)
@@ -62,7 +63,7 @@ except ImportError: #If you dont have the required modules this error will help 
 		os.system('pip install mechanize')
 		os.system('pip install subprocess')
 		os.system('pip install getpass')
-		os.system('pip install ConfigParser')
+		os.system('pip install smtplib')
 
 	'''
 	Allows the program to find the build  
@@ -85,8 +86,7 @@ class color:
    WARNING = '\033'
 x = os.path.dirname(os.path.abspath(__file__))
 init(convert=True)
-
-
+ip = socket.gethostbyname(socket.gethostname())
 
 termsAndConditions = Fore.RED + '''\033[4m Don`t Use Mercury To:
 create and share malicious viruses, illegally harm others computers, 
@@ -110,7 +110,7 @@ def space():
 	print ' '	
 
 def agreement():
- afile = open(x+'/Extra/Mercury.txt','r+')
+ afile = open(x+'\Extra\Mercury.txt','r+')
  term = afile.readlines() # Creates a list of lines called term
  for line in term: #for lines in term
      print(line) #prints line
@@ -155,8 +155,8 @@ def sms():
 		mainmenu()		  
 def readme():
 	clear()
-	readme = open(x+'/README.md','r') #opens file
-	license = open(x+'/License', 'r') #opens file
+	readme = open(x+'\README.md','r') #opens file
+	license = open(x+'\License', 'r') #opens file
 	file_contents = readme.read() #reads file
 	file_contents2 = license.read() #reads file
 	print (file_contents) #prints ReadMe
@@ -170,7 +170,7 @@ def readme():
 	mainmenu()
 def googledork():
 	count3 = 1
-	dork = open(x +'/Resources/GoogleDorks.txt','r') #opens in url
+	dork = open(x +'\Resources\GoogleDorks.txt','r') #opens in url
 	try:
 		while True:
 			lines = dork.read(count3)
@@ -193,7 +193,7 @@ def googledork():
 def update():
 	clear()
 	quick()
-	os.system('git clone https://github.com/MetaChar/Mercury'+x+'/Update') #Just redownloads the repo
+	os.system('git clone https://github.com/MetaChar/Mercury'+x+'\Update') #Just redownloads the repo
 	sys.exit()
 def helpme():
 	print ('''
@@ -558,7 +558,7 @@ def proxys():
 	options.add_argument('--hide-scrollbars')
 	options.add_argument('--disable-gpu')
 	browser = webdriver.Chrome(chrome_options=options) # change to 'Firefox' if running firefox
-	prox_txt = open(x+'/Resources/proxys.txt', 'w')
+	prox_txt = open(x+'\Resources\proxys.txt', 'w')
 	url = 'https://www.us-proxy.org'
 	browser.get(url)
 	try:
@@ -647,7 +647,7 @@ def siteexists():
         	long()
         	mainmenu()
 def brute_force(): #Declares Function
-	f = open(x+'/Resources/passwords.txt', 'r')
+	f = open(x+'\Resources\passwords.txt', 'r')
 	options = webdriver.ChromeOptions()
 	options.add_argument("--disable-popup-blocking")
 	options.add_argument("--ignore-certificate-errors")
@@ -694,11 +694,9 @@ def brute_force(): #Declares Function
 			f.close()
 			mainmenu()
 		except:
-			print (Fore.RED + 'SELECTOR NOT FOUND!!!')
-			print (Fore.RED + 'Or Chrome was closed') 
-			extra_long()
+			print ('Url not found or selector not found.')
+			long()
 			mainmenu()
-			f.close()
 def admin():
 	links = open(x+'\Resources\links.txt')
 	website = raw_input(Fore.CYAN + 'Enter a site to scan just www: ')
@@ -747,10 +745,10 @@ def pip_installep(): #change to p so it could by loaded in prompt
 		quick()
 		prompt()
 def hex():
-	choice = raw_input(Fore.CYAN + 'Would you like to encode or decode? ')
-	if choice == 'encode':
+	choice = raw_input(Fore.CYAN + 'Would you like to (e)ncode or (d)ecode? ')
+	if choice == 'e':
 		encode1()
-	if choice == 'decode':
+	if choice == 'd':
 		decode1() 
 def encode1():
 	Str = raw_input(Fore.CYAN + 'String to encode: ')
@@ -826,6 +824,7 @@ def webbrowserfunc():
 	options.add_argument("test-type")
 	options.add_argument('--hide-scrollbars')
 	options.add_argument('--disable-gpu')
+	options.add_experimental_option("prefs", {"profile.default_content_settings.cookies": 2})
 	options.add_argument('--proxy-server=%s' % PROXY)
 	anonbrowser = webdriver.Chrome(chrome_options=options)
 	anonbrowser.get('http://www.ip-adress.eu/')
@@ -838,7 +837,7 @@ def mac():
 	except KeyboardInterrupt:
 		mainmenu()
 def myip():
-	print (	'Your ip is ' + Fore.CYAN + socket.gethostbyname(socket.gethostname())) #gets ip address from socket linux always returns 12.0.0.1
+	print (	'	Your ip is ' + Fore.CYAN + socket.gethostbyname(socket.gethostname())) #gets ip address from socket linux always returns 12.0.0.1
 	long()
 	mainmenu()
 def pip_installer():
@@ -1198,14 +1197,14 @@ def mainmenu():
  | $$$    /$$$                                                            
  | $$$$  /$$$$  /$$$$$$   /$$$$$$   /$$$$$$$ /$$   /$$  /$$$$$$  /$$   /$$
  | $$ $$/$$ $$ /$$__  $$ /$$__  $$ /$$_____/| $$  | $$ /$$__  $$| $$  | $$
- | $$  $$$| $$| $$$$$$$$| $$  \__/| $$      | $$  | $$| $$  \__/| $$  | $$ \033[92m V.2.3
+ | $$  $$$| $$| $$$$$$$$| $$  \__/| $$      | $$  | $$| $$  \__/| $$  | $$ 
 \033[96m | $$\  $ | $$| $$_____/| $$      | $$      | $$  | $$| $$      | $$  | $$
  | $$ \/  | $$|  $$$$$$$| $$      |  $$$$$$$|  $$$$$$/| $$      |  $$$$$$$
  |__/     |__/ \_______/|__/       \_______/ \______/ |__/       \____  $$
                     \033[91m[Coded By MetaChar] \033[1;37;40m                         /$$  | $$
-                  \033[91m[Instagram: @Seleniumm]\033[1;37;40m                       | $$$$$$/
-                                                                \______/ 
- ''')
+                  \033[91m[Instagram: @Seleniumm]\033[1;37;40m                        | $$$$$$/
+                     [%s]\033[1;37;40m                                \______/
+ ''') % ip
 	space()
 	print (Fore.WHITE + '''
 	[0]\033[96m ReadMe and license \033[1;37;40m 		[9]\033[96m SourceCode from website \033[1;37;40m		[18]\033[96m Gmail Spam\033[1;37;40m
