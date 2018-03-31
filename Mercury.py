@@ -308,8 +308,8 @@ def websitess():
 	[3]\033[96m Dark More Ops \033[1;37;40m	[12]\033[96m Stack Overflow \033[1;37;40m
 	[4]\033[96m Kali Linux \033[1;37;40m         [13]\033[96m Arduino\033[1;37;40m
 	[5]\033[96m Defcon \033[1;37;40m		[14]\033[96m RaspberryPie\033[1;37;40m
-	[6]\033[96m Pycon \033[1;37;40m
-	[7]\033[96m Python.org \033[1;37;40m
+	[6]\033[96m Pycon \033[1;37;40m              [15]\033[96m Kitploit\033[1;37;40m
+	[7]\033[96m Python.org \033[1;37;40m          [16]\033[96m Hack A Day\033[1;37;40m
 	[8]\033[96m HackThis! \033[1;37;40m
 
 
@@ -362,9 +362,17 @@ def websitess():
 	if ans_5 == '14':
 		browser.get('https://www.raspberrypi.org/')
 		websitess()
+	if ans_5 == '15':
+		browser.get('https://www.kitploit.com/')
+		websitess()
+	if ans_5 == '16':
+		browser.get('https://hackaday.com/')
+		websitess()
 	if ans_5 == '99':
 		attempt = 0 
 		mainmenu()
+	else:
+		websitess()
 
 
 
@@ -541,7 +549,6 @@ def toolss():
 		mainmenu()
 	else:
 		toolss()
-proxys_num2 = 2
 def proxys():
 	options = webdriver.ChromeOptions()
 	options.add_argument("--disable-popup-blocking")
@@ -1126,7 +1133,7 @@ def wordlist():
 			wordlist()
 		except KeyboardInterrupt:
 			wordlist()
-	if ans_3 == '3':
+	if ans_3 == '4':
 		try:
 			print ('Downloading B03z Sorted  9GB this may take awhile...')
 			requests.get('http://download.g0tmi1k.com/wordlists/large/b0n3z-wordlist-sorted_REPACK-69.3GB.7z')
@@ -1191,12 +1198,12 @@ def mainmenu():
  | $$$    /$$$                                                            
  | $$$$  /$$$$  /$$$$$$   /$$$$$$   /$$$$$$$ /$$   /$$  /$$$$$$  /$$   /$$
  | $$ $$/$$ $$ /$$__  $$ /$$__  $$ /$$_____/| $$  | $$ /$$__  $$| $$  | $$
- | $$  $$$| $$| $$$$$$$$| $$  \__/| $$      | $$  | $$| $$  \__/| $$  | $$
+ | $$  $$$| $$| $$$$$$$$| $$  \__/| $$      | $$  | $$| $$  \__/| $$  | $$ \033[92m V.2.3
 \033[96m | $$\  $ | $$| $$_____/| $$      | $$      | $$  | $$| $$      | $$  | $$
  | $$ \/  | $$|  $$$$$$$| $$      |  $$$$$$$|  $$$$$$/| $$      |  $$$$$$$
  |__/     |__/ \_______/|__/       \_______/ \______/ |__/       \____  $$
-                                                                /$$  | $$
-                                                               |  $$$$$$/
+                    \033[91m[Coded By MetaChar] \033[1;37;40m                         /$$  | $$
+                  \033[91m[Instagram: @Seleniumm]\033[1;37;40m                       | $$$$$$/
                                                                 \______/ 
  ''')
 	space()
