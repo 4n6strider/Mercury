@@ -14,6 +14,7 @@ try:
 	import wget
 	import socket
 	import urllib
+	import nmap
 	import urllib2
 	import smtplib
 	import hashlib
@@ -55,11 +56,13 @@ except ImportError: #If you dont have the required modules this error will help 
 		os.system('pip install getpass')
 		os.system('pip install smtplib')
 		os.system('pip install wget')
+		os.system('pip install nmap')
 
 	'''
 	Allows the program to find the build  
 
 	'''
+nmap = nmap.PortScanner() 
 class color:
    PURPLE = '\033[95m'
    CYAN = '\033[96m'
@@ -1014,6 +1017,16 @@ def file():
 		print ('Invalid location! ')
 		quick()
 		mainmenu()
+def nmap():
+	nmap_ins = raw_input(Fore.CYAN + 'Have you already installed nmap? y/n ')
+	if nmap_ins == 'n':
+		print (Fore.RED + 'Install in then use this tool')
+		long()
+		mainmenu()
+	if nmap_ins == 'y':
+		ip = raw_input(Fore.CYAN + 'Enter an ip: ')
+		os.system('nmap -T4 -A -v '+ip)
+		mainmenu()
 def listen():
 	print (Fore.RED + 'Once started it cant be stoped without fully closing the program! ')
 	port = raw_input(Fore.CYAN + 'Enter a port: ')
@@ -1052,7 +1065,7 @@ def mainmenu():
 	[2]\033[96m Port Listen \033[1;37;40m             		[11]\033[96m Google dorks\033[1;37;40m                       [20]\033[96m Does Site Exist \033[1;37;40m
 	[3]\033[96m GeoLocation \033[1;37;40m            	        [12]\033[96m Hash encode\033[1;37;40m                        [21]\033[96m Hex decode /encode \033[1;37;40m
 	[4]\033[96m Show mac address \033[1;37;40m			[13]\033[96m Download tools\033[1;37;40m                     [22]\033[96m Find Admin Panel \033[1;37;40m
-	[5]\033[96m Website online/offline \033[1;37;40m		[14]\033[96m Wordlists\033[1;37;40m                          [23]\033[96m Pendrive Linux Tut  \033[1;37;40m
+	[5]\033[96m Website online/offline \033[1;37;40m		[14]\033[96m Nmap\033[1;37;40m                             [23]\033[96m Pendrive Linux Tut  \033[1;37;40m
 	[6]\033[96m File explorer \033[1;37;40m			[15]\033[96m Proxy Scraper \033[1;37;40m                     [24]\033[96m SMS Spam\033[1;37;40m
 	[7]\033[96m GitHub cloner \033[1;37;40m			[16]\033[96m Chat Room\033[1;37;40m 			        [25]\033[96m Websites \033[1;37;40m
 	[8]\033[96m Pip installer \033[1;37;40m 			[17]\033[96m Proxy Browser\033[1;37;40m 	                [26]\033[96m Twitter Info Grabber \033[1;37;40m
@@ -1089,7 +1102,7 @@ def mainmenu():
 	if ans == '13':
 		toolss()
 	if ans == '14':
-		wordlist()
+		nmap()
 	if ans == '15':
 		proxys()
 	if ans == '16':
