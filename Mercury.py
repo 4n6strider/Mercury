@@ -1,16 +1,9 @@
+# coding: utf-8
+#!/usr/bin/env python
 '''
-
 
 inspired by fsociety and Trity
-
-
-
-
 '''
-
-
-
-
 
 
 
@@ -18,23 +11,20 @@ inspired by fsociety and Trity
 import os, sys,time
 try:
 	import json
+	import wget
 	import socket
+	import urllib
 	import urllib2
 	import smtplib
 	import hashlib
-	import random
 	import requests
+	import platform
 	import mechanize
-	from time import strftime
-	from subprocess import call
 	from getpass import getpass
-	from threading import Thread
 	from selenium import webdriver
-	from selenium.common.exceptions import *
 	from colorama import init, Fore, Back, Style
 	from pygoogling.googling import GoogleSearch
 	from urllib2 import Request, urlopen, URLError, HTTPError
-	from selenium.common.exceptions import WebDriverException
 except ImportError: #If you dont have the required modules this error will help install them for you
 	print ('\033[4m Do you have all of the needed Modules ? colorama, selenium, requests, json,Google Search, and urllib2!!')
 	time.sleep(1)
@@ -64,6 +54,7 @@ except ImportError: #If you dont have the required modules this error will help 
 		os.system('pip install subprocess')
 		os.system('pip install getpass')
 		os.system('pip install smtplib')
+		os.system('pip install wget')
 
 	'''
 	Allows the program to find the build  
@@ -83,7 +74,18 @@ class color:
    HEADER = '\033[95m'
    OKBLUE = '\033[94m'
    OKGREEN = '\033[92m'
-   WARNING = '\033'
+   WARNING = '\033[93m'
+   FAIL = '\033[91m'
+W  = '\033[0m'  # white (normal)
+R  = '\033[31m' # red
+G  = '\033[32m' # green
+O  = '\033[33m' # orange
+B  = '\033[34m' # blue
+P  = '\033[35m' # purple
+C  = '\033[36m' # cyan
+GR = '\033[37m' # gray
+T  = '\033[93m' # tan
+M = '\033[1;35;32m' # magenta
 x = os.path.dirname(os.path.abspath(__file__))
 init(convert=True)
 ip = socket.gethostbyname(socket.gethostname())
@@ -1012,187 +1014,25 @@ def file():
 		print ('Invalid location! ')
 		quick()
 		mainmenu()
-def linuxpen():
+def listen():
+	print (Fore.RED + 'Once started it cant be stoped without fully closing the program! ')
+	port = raw_input(Fore.CYAN + 'Enter a port: ')
+	ip = raw_input('Ip: ')
+	s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+	port = int(port)
 	try:
-		clear()
-		print (Fore.GREEN + color.BOLD + '''\033[1m 
-	/$$       /$$                                     /$$$$$$  /$$$$$$   /$$$$$$ 
-	| $$      |__/                                    |_  $$_/ /$$__  $$ /$$__  $$
-	| $$       /$$ /$$$$$$$  /$$   /$$ /$$   /$$        | $$  | $$  \__/| $$  \ $$
-	| $$      | $$| $$__  $$| $$  | $$|  $$ /$$/        | $$  |  $$$$$$ | $$  | $$
-	| $$      | $$| $$  \ $$| $$  | $$ \  $$$$/         | $$   \____  $$| $$  | $$
-	| $$      | $$| $$  | $$| $$  | $$  >$$  $$         | $$   /$$  \ $$| $$  | $$
-	| $$$$$$$$| $$| $$  | $$|  $$$$$$/ /$$/\  $$       /$$$$$$|  $$$$$$/|  $$$$$$/
-	|________/|__/|__/  |__/ \______/ |__/  \__/      |______/ \______/  \______/ 
-	                                                                              
-	                                                                              
-	                                                                            \033[1m  ''') 
-		print ('All downloads are from the offical websites 64bit When Done Push Crtl C')
-		space()
-		print (Fore.WHITE + '''
-		[0] Kail Linux ISO 2.9 GB 	
-		[1] Linux Mint ISO  1.8 GB		
-		[2] Debian  291 MB        	
-		[3] Fedora EXE 1.5GB          
-		[4] Ubuntu ISO 1.5 GB 
-		[99] Exit submenu
-		''')
-		space()	
-		ans_4 = raw_input(Fore.GREEN  + "Linux ~# ")
-		if ans_4 == '0':
-			print ('This might take awhile once done it will be saved to the users or downloads folder')
-			requests.get('http://cdimage.kali.org/kali-2018.1/kali-linux-2018.1-amd64.iso')
-			linux2()
-		if ans_4 == '1':
-			print ('This might take awhile once done it will be saved to the users or downloads folder')
-			requests.get('http://mirrors.advancedhosters.com/linuxmint/isos/stable/18.3/linuxmint-18.3-cinnamon-64bit.iso')
-			linux2()
-		if ans_4 == '2':
-			print ('This might take awhile once done it will be saved to the users or downloads folder')
-			requests.get('https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-9.4.0-amd64-netinst.iso')
-			linux2()
-		if ans_4 == '3':
-			print ('This might take awhile once done it will be saved to the users or downloads folder')
-			requests.get('https://getfedora.org/fmw/FedoraMediaWriter-win32-4.1.0.exe')
-			linux2()
-		if ans_4 == '4':
-			print ('This might take awhile once done it will be saved to the users folder')
-			requests.get('https://www.ubuntu.com/download/desktop/thank-you?country=US&version=16.04.4&architecture=amd64')
-			linux2()
-	except KeyboardInterrupt:
-		linux2()
-def linux2():
-	print ('This next part requires an usb stick.')
-	requests.get('https://www.pendrivelinux.com/downloads/Universal-USB-Installer/Universal-USB-Installer-1.9.8.0.exe')
-	print ('This link will help with pendrivelinux : https://www.cnet.com/how-to/what-to-do-with-your-usb-flash-drive-run-linux/ ')
-	extra_long()
-	mainmenu()
-
-def wordlist():
-	clear()
-	print (Fore.WHITE + '''/$$      /$$                           /$$ /$$ /$$             /$$             
-| $$  /$ | $$                          | $$| $$|__/            | $$             
-| $$ /$$$| $$  /$$$$$$   /$$$$$$   /$$$$$$$| $$ /$$  /$$$$$$$ /$$$$$$   /$$$$$$$
-| $$/$$ $$ $$ /$$__  $$ /$$__  $$ /$$__  $$| $$| $$ /$$_____/|_  $$_/  /$$_____/
-]\033[96m| $$$$_  $$$$| $$  \ $$| $$  \__/| $$  | $$| $$| $$|  $$$$$$   | $$   |  $$$$$$ 
-| $$$/ \  $$$| $$  | $$| $$      | $$  | $$| $$| $$ \____  $$  | $$ /$$\____  $$
-| $$/   \  $$|  $$$$$$/| $$      |  $$$$$$$| $$| $$ /$$$$$$$/  |  $$$$//$$$$$$$/
-|__/     \__/ \______/ |__/       \_______/|__/|__/|_______/    \___/ |_______/ 
-                                                                                
-                                                                                
-                                                                                                            
- ''')
-	space()
-	print (Fore.WHITE + '''
-	[0]\033[96m 10m passwords 85MB \033[1;37;40m 	
-	[1]\033[96m CrackStation 246MB \033[1;37;40m 		
-	[2]\033[96m B0n3z Dictionary 3GB \033[1;37;40m             	
-	[3]\033[96m 18_in_1 5GB \033[1;37;40m                
-	[4]\033[96m B0n3z-wordlist-sorted 9GB \033[1;37;40m		
-
-		              
-
-        [99]\033[96m Exit submenu\033[1;37;40m''')
-	ans_3 = raw_input('Wordlist ~# ')
-	if ans_3 == '0':
-		try:
-			print ('Downloading 10m password 85MB this may take awhile...')
-			requests.get('http://download.g0tmi1k.com/wordlists/large/10-million-combos.zip')
-			print ('Saved Under Users!')
-			long()
-			wordlist()
-		except KeyboardInterrupt:
-			wordlist()
-	if ans_3 == '1':
-		try:
-			print ('Downloading CrackStation 246MB this may take awhile...')
-			requests.get('http://download.g0tmi1k.com/wordlists/large/crackstation-human-only.txt.gz')
-			print ('Saved Under Users!')
-			long()
-			wordlist()
-		except KeyboardInterrupt:
-			wordlist()
-	if ans_3 == '2':
-		try:
-			print ('Downloading Bon3z Dictionary 3GB this may take awhile...')
-			requests.get('http://download.g0tmi1k.com/wordlists/large/b0n3z_dictionary-SPLIT-BY-LENGTH-34.6GB.7z')
-			print ('Saved Under Users!')
-			long()
-			wordlist()
-		except KeyboardInterrupt:
-			wordlist()
-	if ans_3 == '3':
-		try:
-			print ('Downloading 18_in_1 5GB this may take awhile...')
-			requests.get('http://download.g0tmi1k.com/wordlists/large/36.4GB-18_in_1.lst.7z')
-			print ('Saved Under Users!')
-			long()
-			wordlist()
-		except KeyboardInterrupt:
-			wordlist()
-	if ans_3 == '4':
-		try:
-			print ('Downloading B03z Sorted  9GB this may take awhile...')
-			requests.get('http://download.g0tmi1k.com/wordlists/large/b0n3z-wordlist-sorted_REPACK-69.3GB.7z')
-			print ('Saved Under Users!')
-			long()
-			wordlist()
-		except KeyboardInterrupt:
-			wordlist()
-	if ans_3 == '99': 
-		mainmenu()
-def prompt():
-	try:
+		s.bind((ip,port))
+		s.listen(1)
 		while True:
-			command = raw_input(Fore.CYAN + "$User@Mercury> ")
-			if command == ' ':
-				clear()
-				prompt()
-			if command == '':
-				clear()
-				prompt()
-			if command == 'stop':
-				mainmenu()
-			if command == 'github':
-				githubp()
-			if command == 'bruteforce':
-				brute_force()
-			if command == 'source':
-				sourcecodep()
-			if command == 'pips':
-				pip_installerp()
-			if command == 'helpme':
-				print helpme()
-				clear()
-				prompt()
-			if command == 'geoip':
-				geoLocationp()
-				prompt()
-			if command == 'pendrive':
-				linuxpen()
-				prompt()
-			if command == 'hash':
-				hash()
-				prompt()
-			if command == 'sms':
-				sms()
-				prompt()
-			if command == 'anonemail':
-				spoofemailsetup()
-				prompt()
-			if command == 'wordlist':
-				wordlist()
-				prompt()
-			os.system(command)
-			prompt()
+  		 	print s.accept()[1]
+  		 	space()
 	except KeyboardInterrupt:
+		s.close()
 		mainmenu()
 proxys_num2 = 0
 proxys_num = 0
 def mainmenu():
 	clear()
-	print (Fore.CYAN +'Dir = '+(x))
-	space()
 	print (Fore.WHITE +  color.BOLD + '''  /$$      /$$                                                            
  | $$$    /$$$                                                            
  | $$$$  /$$$$  /$$$$$$   /$$$$$$   /$$$$$$$ /$$   /$$  /$$$$$$  /$$   /$$
@@ -1203,18 +1043,18 @@ def mainmenu():
  |__/     |__/ \_______/|__/       \_______/ \______/ |__/       \____  $$
                     \033[91m[Coded By MetaChar] \033[1;37;40m                         /$$  | $$
                   \033[91m[Instagram: @Seleniumm]\033[1;37;40m                        | $$$$$$/
-                     [%s]\033[1;37;40m                                \______/
+                     [%s]\033[1;37;40m                           \______/
  ''') % ip
 	space()
 	print (Fore.WHITE + '''
 	[0]\033[96m ReadMe and license \033[1;37;40m 		[9]\033[96m SourceCode from website \033[1;37;40m		[18]\033[96m Gmail Spam\033[1;37;40m
 	[1]\033[96m Brute force \033[1;37;40m 			[10]\033[96m Ip address from website\033[1;37;40m		[19]\033[96m Gmail Spoof\033[1;37;40m
-	[2]\033[96m Whats my Ip \033[1;37;40m             		[11]\033[96m Google dorks\033[1;37;40m                       [20]\033[96m Does Site Exist \033[1;37;40m
+	[2]\033[96m Port Listen \033[1;37;40m             		[11]\033[96m Google dorks\033[1;37;40m                       [20]\033[96m Does Site Exist \033[1;37;40m
 	[3]\033[96m GeoLocation \033[1;37;40m            	        [12]\033[96m Hash encode\033[1;37;40m                        [21]\033[96m Hex decode /encode \033[1;37;40m
 	[4]\033[96m Show mac address \033[1;37;40m			[13]\033[96m Download tools\033[1;37;40m                     [22]\033[96m Find Admin Panel \033[1;37;40m
 	[5]\033[96m Website online/offline \033[1;37;40m		[14]\033[96m Wordlists\033[1;37;40m                          [23]\033[96m Pendrive Linux Tut  \033[1;37;40m
 	[6]\033[96m File explorer \033[1;37;40m			[15]\033[96m Proxy Scraper \033[1;37;40m                     [24]\033[96m SMS Spam\033[1;37;40m
-	[7]\033[96m GitHub cloner \033[1;37;40m			[16]\033[96m Prompt\033[1;37;40m 			        [25]\033[96m Websites \033[1;37;40m
+	[7]\033[96m GitHub cloner \033[1;37;40m			[16]\033[96m Chat Room\033[1;37;40m 			        [25]\033[96m Websites \033[1;37;40m
 	[8]\033[96m Pip installer \033[1;37;40m 			[17]\033[96m Proxy Browser\033[1;37;40m 	                [26]\033[96m Twitter Info Grabber \033[1;37;40m
 		              
 	[100]\033[96m Update\033[1;37;40m	[99]\033[96m Exit tool\033[1;37;40m	
@@ -1225,7 +1065,7 @@ def mainmenu():
 	if ans == '1':
 		brute_force()
 	if ans == '2':
-		myip()
+		listen()
 	if ans == '3':
 		geoLocation()
 	if ans == '4':
@@ -1253,9 +1093,7 @@ def mainmenu():
 	if ans == '15':
 		proxys()
 	if ans == '16':
-		clear()
-		helpme()
-		prompt()
+		chat()
 	if ans == '17':
 		webbrowserfunc()
 	if ans == '18':
