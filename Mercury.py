@@ -14,7 +14,6 @@ try:
 	import wget
 	import socket
 	import urllib
-	import nmap
 	import urllib2
 	import smtplib
 	import hashlib
@@ -56,7 +55,6 @@ except ImportError: #If you dont have the required modules this error will help 
 		os.system('pip install getpass')
 		os.system('pip install smtplib')
 		os.system('pip install wget')
-		os.system('pip install nmap')
 
 	'''
 	Allows the program to find the build  
