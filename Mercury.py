@@ -60,7 +60,6 @@ except ImportError: #If you dont have the required modules this error will help 
 	Allows the program to find the build  
 
 	'''
-nmap = nmap.PortScanner() 
 class color:
    PURPLE = '\033[95m'
    CYAN = '\033[96m'
