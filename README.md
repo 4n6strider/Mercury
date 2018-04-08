@@ -3,7 +3,7 @@ Main Menu
 ======
 
 ![Screenshot](preview.png)
-
+Made for windows!
 Installation
 =====
 Requires Python2 (Linux)
@@ -42,16 +42,6 @@ exact location of the ip address
 
 ##### Sms Spam
 Uses gmail to spam sms
-
-
-
-##### Wordlist
-Provides links to wordlists going up tp 9GB
-
-
-
-##### Linux Pendrive
-Provides links to Linux ISO
 
 
 
@@ -122,20 +112,22 @@ Finds ip address from website
 
 
 
-##### Prompt
-Acts as a Terminal
+##### nmap
+Nmap must be pre installed
+and its somewhat glitchy on linux
 
 
 
 
-##### Python Idle
-Loads up the Python idle
+##### Port Listen
+Listens to ports
+
+#### DOS 
+dos attack via packets
 
 
-
-
-##### Webbrowser
-Loads up Chrome
+##### AnonWebbrowser
+Loads up Chrome, with a proxy
 
 
 

