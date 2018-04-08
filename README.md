@@ -1,9 +1,7 @@
 
 Main Menu
 ======
-
 ![Screenshot](preview.png)
-Made for windows!
 Installation
 =====
 Requires Python2 (Linux)

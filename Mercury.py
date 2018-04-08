@@ -19,13 +19,11 @@ try:
 	import smtplib
 	import random
 	import hashlib
-	import itertools
 	import requests
 	import platform
 	import mechanize
 	import subprocess
 	from six.moves import urllib
-	from getpass import getpass
 	from selenium import webdriver
 	from colorama import init, Fore, Back, Style
 	from pygoogling.googling import GoogleSearch
@@ -1021,7 +1019,7 @@ def mainmenu():
                     \033[91m[Coded By MetaChar] \033[1;37;40m                         /$$  | $$
                   \033[91m[Instagram: @Seleniumm]\033[1;37;40m                        | $$$$$$/
                      [%s]\033[1;37;40m                            \______/
- ''')
+ ''') % ip
 	space()
 	print (Fore.WHITE + '''
 	[0]\033[96m ReadMe and license \033[1;37;40m 		[9]\033[96m SourceCode from website \033[1;37;40m		[18]\033[96m Gmail Spam\033[1;37;40m
