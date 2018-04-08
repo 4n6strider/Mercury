@@ -1,0 +1,14 @@
+Linux:https://youtu.be/7z1RIJfjbnc (Only one i could find :(  )
+https://askubuntu.com/questions/60218/how-to-add-a-directory-to-the-path
+http://selftechy.com/2011/08/17/running-selenium-tests-with-chromedriver-on-linux
+
+
+Windows: https://www.youtube.com/watch?v=9kWz5tL4D7w
+
+
+
+Mac: https://www.youtube.com/watch?v=5lWOV0rnYRo
+
+
+
+downloads (all): https://chromedriver.storage.googleapis.com/index.html?path=2.37/
